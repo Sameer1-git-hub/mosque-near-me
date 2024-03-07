@@ -6,7 +6,7 @@ import App from './App'
 import { PersistGate } from 'redux-persist/integration/react';
 import createStoreAndPersistor from './src/redux/Store';
 
-export default function Eample() {
+export default function Main() {
 
   // store.subscribe(() => {
   //   console.log(store.getState());

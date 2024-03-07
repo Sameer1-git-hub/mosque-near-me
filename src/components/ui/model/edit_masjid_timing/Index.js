@@ -47,11 +47,11 @@ const Model = ({ masjid }) => {
                 <View style={styles.modalContainer}>
                     <View style={styles.modalContent}>
                         <TimePicker label="Fazar" onSelectedTimeChange={(selectedTime) => updateMasjid(selectedTime, "fajr")} masjid={updatedMajid} namazName={"fajr"}/>
-                        <TimePicker label="Zuhar" onSelectedTimeChange={(selectedTime) => updateMasjid(selectedTime, 'Zuhar')} masjid={updatedMajid} namazName={"zohar"} />
-                        <TimePicker label="Asar" onSelectedTimeChange={(selectedTime) => updateMasjid(selectedTime, 'Asar')} masjid={updatedMajid} namazName={"asar"} />
-                        <TimePicker label="Magrib" onSelectedTimeChange={(selectedTime) => updateMasjid(selectedTime, 'Magrib')} masjid={updatedMajid} namazName={"maghrib"} />
-                        <TimePicker label="Isha" onSelectedTimeChange={(selectedTime) => updateMasjid(selectedTime, 'Isha')} masjid={updatedMajid} namazName={"isha"} />
-                        <TimePicker label="Juma" onSelectedTimeChange={(selectedTime) => updateMasjid(selectedTime, 'Juma')} masjid={updatedMajid} namazName={"juma"} />
+                        <TimePicker label="Zuhar" onSelectedTimeChange={(selectedTime) => updateMasjid(selectedTime, 'zohar')} masjid={updatedMajid} namazName={"zohar"} />
+                        <TimePicker label="Asar" onSelectedTimeChange={(selectedTime) => updateMasjid(selectedTime, 'asar')} masjid={updatedMajid} namazName={"asar"} />
+                        <TimePicker label="Magrib" onSelectedTimeChange={(selectedTime) => updateMasjid(selectedTime, 'maghrib')} masjid={updatedMajid} namazName={"maghrib"} />
+                        <TimePicker label="Isha" onSelectedTimeChange={(selectedTime) => updateMasjid(selectedTime, 'isha')} masjid={updatedMajid} namazName={"isha"} />
+                        <TimePicker label="Juma" onSelectedTimeChange={(selectedTime) => updateMasjid(selectedTime, 'juma')} masjid={updatedMajid} namazName={"juma"} />
                         <View style={{ marginTop: 10, marginLeft: 10, }}>
                             <Send onPress={handleSubmit} padding={5} name={'send'} size={30} color={'#0B7955'} />
                         </View>

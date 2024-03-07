@@ -19,7 +19,7 @@ export default function TimePicker({ label, onSelectedTimeChange, masjid, namazN
   const handleTimeChange = (event, time) => {
     setShowTimePicker(false);
     const selectedDateTime = new Date(time);
-    onSelectedTimeChange(selectedDateTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }));
+    onSelectedTimeChange(selectedDateTime.toLocaleTimeString([[]], { hour: '2-digit', minute: '2-digit' }));
   };
 
   const openTimePicker = () => {
