@@ -1,0 +1,1 @@
+const googlemapkey = 'AIzaSyAsKSjAW53hTyvVK3JkzHhnWKFzJjhONX8'
