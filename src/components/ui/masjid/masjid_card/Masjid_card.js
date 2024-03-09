@@ -36,18 +36,18 @@ export default function Masjidcard({ masjid }) {
                     <View style={styles.cardContent}>
                         <View style={styles.mainicons}>
                             {isLoggedIn ? (
-                                    <Model  masjid={masjid} />
+                                    <Model masjid={masjid} />
                                 ) : (
-                                    <Edit onPress={handleLoginShow} name="edit" size={30} color={'#FFFFFF'} /> 
+                                    <Edit  onPress={handleLoginShow} name="edit" size={30} color={'#FFFFFF'} /> 
                                 )}
                             <Location  masjid={masjid} />
                             <View>
                             {isLoggedIn ? (
-                                    <Favbutton key={masjid} masjidId={masjid} />
+                                    <Favbutton  masjidId={masjid} />
                                 ) : (
                                     <Icon onPress={handleLoginShow} name="heart-o" size={30} color={'#FFFFFF'} /> 
                                 )}
-                                <Direction masjid={masjid} />
+                                <Direction  masjid={masjid} />
                             </View>
                         </View>
                         <View style={{ alignItems: 'center', overflow: 'scroll' }}>
@@ -57,7 +57,7 @@ export default function Masjidcard({ masjid }) {
                             </Text>
                         </View>
                     </View>
-                    <Timebox key={masjid.id}  masjid={masjid} />
+                    <Timebox masjid={masjid} />
                 </LinearGradient>
             </View>
         </View>

@@ -6,6 +6,10 @@ import Icon from 'react-native-vector-icons/AntDesign';
 export default function TimePicker({ label, onSelectedTimeChange, masjid, namazName }) {
   const [showTimePicker, setShowTimePicker] = useState(false);
 
+  // console.log(masjid)
+  // console.log(onSelectedTimeChange)
+  console.log('namzname', namazName)
+
   useEffect(() => {
     const tempdate = new Date(masjid[namazName]);
     console.log(tempdate)
@@ -16,10 +20,11 @@ export default function TimePicker({ label, onSelectedTimeChange, masjid, namazN
   //   console.log(tempdate)
   // }, [masjid[namazName]]);
 
-  const handleTimeChange = (event, time) => {
+  const handleTimeChange = (event, time, masjid ) => {
     setShowTimePicker(false);
-    const selectedDateTime = new Date(time);
-    onSelectedTimeChange(selectedDateTime.toLocaleTimeString([[]], { hour: '2-digit', minute: '2-digit' }));
+    const selectedDateTime = new Date(masjid);
+    console.log('selectedDateTime', selectedDateTime)
+    onSelectedTimeChange(selectedDateTime.toLocaleTimeString([]));
   };
 
   const openTimePicker = () => {
@@ -68,7 +73,7 @@ export default function TimePicker({ label, onSelectedTimeChange, masjid, namazN
           backgroundColor: '#0B7955',
         }}
       >
-        <Text style={{ fontSize: 20, color: '#fff', fontWeight: 'bold', marginHorizontal: 15 }}>
+        <Text style={{ fontSize: 20, width:70, color: '#fff', fontWeight: 'bold', marginHorizontal: 15, textAlign:'center' }}>
           {masjid[namazName]}
           {/* {selectedTime ? selectedTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : time} */}
         </Text>

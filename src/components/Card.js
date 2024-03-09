@@ -13,7 +13,7 @@ import Geolocation from '@react-native-community/geolocation';
 import { Linking } from 'react-native';
 import Model from '../editTime/Model';
 import LinearGradient from 'react-native-linear-gradient';
-import Favicon from './Favicon';
+import Favicon from './ui/form/buttons/Favicon';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Edit from 'react-native-vector-icons/AntDesign';
 import Icon2 from 'react-native-vector-icons/Ionicons';

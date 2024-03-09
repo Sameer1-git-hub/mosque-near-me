@@ -8,8 +8,10 @@ import ProfileScreen from './src/Screens/ProfileScreen';
 import Loginform from './src/logincomponent/Login';
 import Register from './src/logincomponent/Register';
 import Popupform from './src/logincomponent/popups/Popupform';
+import Map from './src/Screens/Map';
 import Registerpopup from './src/logincomponent/popups/Registerpopup';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+
 
 
 const Stack = createNativeStackNavigator();
@@ -30,6 +32,8 @@ function TabNavigator() {
           iconName = focused ? 'cards-heart' : 'cards-heart-outline';
         } else if (route.name === 'Account') {
           iconName = focused ? 'account' : 'account-outline';
+        }else if (route.name === 'Map') {
+          iconName = focused ? 'map' : 'map-outline';
         }
 
         return <Icon name={iconName} size={30} color={'#0B7955'} />;
@@ -39,6 +43,7 @@ function TabNavigator() {
       <Tab.Screen name="Dashboard" component={Home}/>
       <Tab.Screen name="Favorite" component={Favorite}/>
       <Tab.Screen name="Account" component={ProfileScreen}/>
+      <Tab.Screen name="Map" component={Map}/>
     </Tab.Navigator>
   );
 }

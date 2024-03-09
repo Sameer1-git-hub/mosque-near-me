@@ -17,7 +17,7 @@ export default function Getlocationbutton(props) {
         const latitude = location.latitude;
         const longitude = location.longitude;
         props.setUserlocation({ latitude, longitude });
-        setLocationFetched(true); // Mark location as fetched
+        setLocationFetched(true);
       })
       .catch(error => {
         const { code, message } = error;
@@ -26,15 +26,14 @@ export default function Getlocationbutton(props) {
   };
 
   useEffect(() => {
-    // Call headeluserlocation when the component mounts, but only if location hasn't been fetched yet
     if (!locationFetched) {
       headeluserlocation();
     }
   }, [locationFetched]);
 
   return (
-    <TouchableOpacity onPress={headeluserlocation}>
-      <Icon name="location-crosshairs" size={30} color={'#0B7955'} />
+    <TouchableOpacity style={{marginRight: 10, position: 'relative'}} onPress={headeluserlocation}>
+      <Icon name="location-crosshairs" size={30}  color={'#0B7955'} />
     </TouchableOpacity>
   )
 }

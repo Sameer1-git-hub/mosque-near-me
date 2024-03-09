@@ -1,10 +1,9 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { View, ActivityIndicator, FlatList, TouchableOpacity } from 'react-native';
-import GooglePlacesInput from '../components/Searchbar';
+import { View, ActivityIndicator, FlatList, } from 'react-native';
+import GooglePlacesInput from '../components/ui/model/search/Searchbar';
 import Masjidcard from '../components/ui/masjid/masjid_card/Masjid_card';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
-import GetLocation from 'react-native-get-location';
 import Getlocationbutton from '../components/ui/form/buttons/Getlocationbutton';
 
 export default function Home(props) {
@@ -12,86 +11,70 @@ export default function Home(props) {
   const token = userData.token;
 
   const [masjidData, setMasjidData] = useState([]);
-  const [Userlocation, setUserlocation] = useState([]);
+  const [Userlocation, setUserlocation] = useState([28.65068, 77.23342]);
   const [loading, setLoading] = useState(false);
-  const [query , setQuery] = useState([]);
-
-  const [page, setPage] = useState(1);
+  const [current_page, setcurrent_page] = useState(1);
   const [refreshing, setRefreshing] = useState(false);
   const flatListRef = useRef(null);
 
-
-
   useEffect(() => {
-    getLocation();
-  }, []);
+    sendLocationData();
+  }, [Userlocation]);
 
-  const getLocation = () => {
-    GetLocation.getCurrentPosition({
-      enableHighAccuracy: true,
-      timeout: 60000,
-    })
-      .then(location => {
-        const { latitude, longitude } = location;
+  console.log('locat', Userlocation)
 
-        sendLocationData(latitude, longitude);
-      })
-      .catch(error => {
-        console.error('Error getting location:', error);
-      });
-  };
-
-  const sendLocationData = async (latitude, longitude) => {
+  const sendLocationData = async () => {
     try {
       setLoading(true);
       const response = await axios.post(
-        `https://admin.meandmyteam.org/api/masjid-nearby?page=${page}`,
-        { latitude, longitude },
+        `https://admin.meandmyteam.org/api/masjid-nearby?page=${current_page}`,
+        {
+          latitude: Userlocation[0],
+          longitude: Userlocation[1]
+        },
+
         {
           headers: {
             Authorization: `Bearer ${token}`
           }
         }
       );
-      setPage(page + 1);
+      setcurrent_page(current_page + 1);
       setMasjidData(prevData => [...prevData, ...response.data.results]);
     } catch (error) {
       console.error('Error sending location data:', error);
     } finally {
       setLoading(false);
-      setRefreshing(false); // Set refreshing to false when data fetching completes
+      setRefreshing(false);
     }
   };
 
-  const handleLoadMore = () => {
-    if (!loading) {
-      const { latitude, longitude } = masjidData[masjidData.length - 1];
-      
-    }
-  };
 
-  const heandelsendlocation = (locat) => {
-    setUserlocation([locat.latitude, locat.longitude]);
+  const heandelsendlocation = (location) => {
+    setMasjidData([]);
+    setUserlocation([location.latitude, location.longitude]);
   };
 
   const handleRefresh = () => {
     setRefreshing(true);
-    setPage(1); 
-    setMasjidData([]); 
-    getLocation(); 
+    setcurrent_page(1);
+    sendLocationData();
+  };
+  const handleLoadMore = () => {
+    sendLocationData();
   };
 
   return (
     <View style={{ flex: 1, backgroundColor: '#fff' }}>
       <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }} >
-        <GooglePlacesInput />
+        <GooglePlacesInput setUserlocation={heandelsendlocation} />
         <Getlocationbutton setUserlocation={heandelsendlocation} />
       </View>
       <FlatList
         ref={flatListRef}
         data={masjidData}
-        renderItem={({ item }) => <Masjidcard key={item.id} masjid={item} />}
-        keyExtractor={(item) => item.id.toString()}
+        renderItem={({ item, index }) => <Masjidcard masjidID={`${item.id}_${index}`} masjid={item} />}
+        keyExtractor={(item, index) => `${item.id}_${index}`}
         onEndReached={handleLoadMore}
         onEndReachedThreshold={0.1}
         ListFooterComponent={loading && <ActivityIndicator size="large" color="#ff0000" />}

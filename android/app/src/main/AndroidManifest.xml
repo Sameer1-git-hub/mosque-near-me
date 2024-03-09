@@ -4,7 +4,14 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.CAMERA" />
-<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
+    <application>
+      <meta-data
+        android:name="com.google.android.geo.AIzaSyAsKSjAW53hTyvVK3JkzHhnWKFzJjhONX8"
+        android:value="AIzaSyAsKSjAW53hTyvVK3JkzHhnWKFzJjhONX8"/>
+      <uses-library android:name="org.apache.http.legacy" android:required="false"/>
+   </application>
     
 
     <application

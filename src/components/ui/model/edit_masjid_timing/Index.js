@@ -10,30 +10,22 @@ import Edit from 'react-native-vector-icons/AntDesign';
 const Model = ({ masjid }) => {
     const [updatedMajid, setUpdatedMajid] = useState(masjid);
     const [showPrayers, setShowPrayers] = useState(false);
-    // const [Time, setTime] = useState({});
 
     const handleButtonPress = () => {
         setShowPrayers(!showPrayers);
     };
 
-    // const handleSelectedTimeChange = (prayerName) => {
-    //     const formattedTime = moment(time).local().format('YYYY-MM-DDTHH:mm:ss.SSS[Z]');
-
-    //     setTime((prevTime) => ({
-    //         ...prevTime,
-    //         [prayerName]: formattedTime,
-    //     }));
-    // };
-
     const handleSubmit = () => {
-        // console.log(Time);
-        setShowPrayers(false); // Close the popup after submitting
+        console.log(updatedMajid);
+        setShowPrayers(false); 
     };
 
     const updateMasjid = (selectedTime, namazName) => {
+        
         setUpdatedMajid(prevMajid => ({
             ...prevMajid,
-            [namazName]: selectedTime // Using bracket notation to dynamically set the property
+            [namazName]: selectedTime
+            
         }));
     }
 
@@ -42,22 +34,24 @@ const Model = ({ masjid }) => {
             <TouchableOpacity onPress={handleButtonPress}>
                 <Edit name={'edit'} size={30} color={'#fff'} />
             </TouchableOpacity>
-
+            
             <Modal visible={showPrayers} animationType="slide" transparent>
                 <View style={styles.modalContainer}>
+                
                     <View style={styles.modalContent}>
+                    <View style={{ position: 'absolute', right: 15 }}>
+                            <Send onPress={() => setShowPrayers(false)} padding={5} name={'close'} size={30} color={'#0B7955'} />
+                        </View>
                         <TimePicker label="Fazar" onSelectedTimeChange={(selectedTime) => updateMasjid(selectedTime, "fajr")} masjid={updatedMajid} namazName={"fajr"}/>
                         <TimePicker label="Zuhar" onSelectedTimeChange={(selectedTime) => updateMasjid(selectedTime, 'zohar')} masjid={updatedMajid} namazName={"zohar"} />
                         <TimePicker label="Asar" onSelectedTimeChange={(selectedTime) => updateMasjid(selectedTime, 'asar')} masjid={updatedMajid} namazName={"asar"} />
                         <TimePicker label="Magrib" onSelectedTimeChange={(selectedTime) => updateMasjid(selectedTime, 'maghrib')} masjid={updatedMajid} namazName={"maghrib"} />
                         <TimePicker label="Isha" onSelectedTimeChange={(selectedTime) => updateMasjid(selectedTime, 'isha')} masjid={updatedMajid} namazName={"isha"} />
                         <TimePicker label="Juma" onSelectedTimeChange={(selectedTime) => updateMasjid(selectedTime, 'juma')} masjid={updatedMajid} namazName={"juma"} />
-                        <View style={{ marginTop: 10, marginLeft: 10, }}>
-                            <Send onPress={handleSubmit} padding={5} name={'send'} size={30} color={'#0B7955'} />
+                        <View style={{ marginTop: 10,}}>
+                            <Send onPress={handleSubmit} name={'send'} size={30} color={'#0B7955'} />
                         </View>
-                        <View style={{ marginTop: 10, marginLeft: 10, }}>
-                            <Send onPress={() => setShowPrayers(false)} padding={5} name={'close'} size={30} color={'#0B7955'} />
-                        </View>
+                        
                     </View>
                 </View>
             </Modal>
@@ -88,6 +82,7 @@ const styles = StyleSheet.create({
     modalContent: {
         backgroundColor: 'white',
         padding: 20,
+        paddingTop: 40,
         borderRadius: 10,
         backgroundColor: '#ADEFD1FF',
     },

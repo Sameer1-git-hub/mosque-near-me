@@ -1,62 +1,56 @@
-import React, { useState } from 'react';
-import { View, TextInput, Button, FlatList, Text, StyleSheet } from 'react-native';
+import React from 'react';
+import { StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/Entypo';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 
 
-const GooglePlacesInput = () => {
-  const [searchText, setSearchText] = useState('');
+const GooglePlacesInput = (props) => {
 
-  //  console.log(searchText)
-  const searchData = (text) => {
-  };
   return (
     <>
       <GooglePlacesAutocomplete
         placeholder='Enter Location'
         onPress={(data, details = null) => {
-          props.setQuery([details.geometry.location.lat, details.geometry.location.lng])
+          const latitude = details.geometry.location.lat;
+          const longitude = details.geometry.location.lng;
+          props.setUserlocation({latitude,longitude});
         }}
         query={{
           key: 'AIzaSyAsKSjAW53hTyvVK3JkzHhnWKFzJjhONX8',
           language: 'en',
+          components: 'country:in',
         }}
         fetchDetails={true}
         styles={{
           container: {
             flex: 1,
+            alignItems: 'center'
           },
           textInputContainer: {
-            width: '100%',
-            borderBottomWidth: 1,
-            borderBottomColor: 'red',
+            width: '90%',
+            borderBottomWidth: 2,
+            borderBottomColor: 'gray',
+            
           },
           description: {
             fontWeight: 'bold',
           },
           predefinedPlacesDescription: {
             color: '#1faadb',
+            
           },
         }}
       />
-      <Icon style={styles.icon} onPress={() => setSearchText('')} name={'circle-with-cross'} size={30} color={'#0B7955'} />
     </>
   );
 };
 
 
 const styles = StyleSheet.create({
-  search: {
-    width: '85%',
-    height: 40,
-    paddingHorizontal: 10,
-    borderBottomColor: 'gray',
-    borderBottomWidth: 2,
-  },
   icon: {
     position: 'absolute',
     right: 50,
-    top: 2
+    verticalAlign: 'middle',
   }
 
 })

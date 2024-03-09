@@ -4,6 +4,8 @@ import Fevmasjid from '../components/fevmasjids/Fevmasjid';
 import { useSelector } from 'react-redux';
 import LinearGradient from 'react-native-linear-gradient';
 import Crd from '../contant/Crd'
+import MyDateTimePicker from '../components/Datetime'
+import Userlocation from '../components/location/Userlocation';
 
 
 const Favorite = ({ navigation }) => {
@@ -30,6 +32,8 @@ const Favorite = ({ navigation }) => {
           textAlign: 'center'
         }}>Favorite Mosque's</Text>
       </LinearGradient>
+      <MyDateTimePicker />
+      <Userlocation />
     </>
   );
 };

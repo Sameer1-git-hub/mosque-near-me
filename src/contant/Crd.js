@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { View, ActivityIndicator, FlatList } from 'react-native';
-import GooglePlacesInput from '../components/Searchbar';
+import GooglePlacesInput from '../components/ui/model/search/Searchbar';
 import Masjidcard from '../components/ui/masjid/masjid_card/Masjid_card';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
