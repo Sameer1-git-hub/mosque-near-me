@@ -2,8 +2,10 @@ import React, { useState } from 'react';
 import { View, Text, Image, TouchableOpacity, TextInput, ScrollView, StyleSheet } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { registerUser } from '../redux/store/slice/Userslice';
+import Signinbtn from './social/Signinbtn';
+import Mosque from 'react-native-vector-icons/FontAwesome6';
 
-const Register = ({navigation}) => {
+const Register = ({ navigation }) => {
   const dispatch = useDispatch();
 
   const [name, setName] = useState('');
@@ -18,12 +20,12 @@ const Register = ({navigation}) => {
         alert('Please fill out all fields');
         return;
       }
-  
+
       if (password !== c_password) {
         alert("Passwords don't match");
         return;
       }
-  
+
       // Dispatch action to register user
       dispatch(registerUser({ name, username, email, password, c_password }));
 
@@ -34,13 +36,15 @@ const Register = ({navigation}) => {
   };
 
   return (
-    <View style={{ backgroundColor: '#123032', height: '100%' }}>
-      <ScrollView>
-        <View style={{ alignItems: 'center' }}>
-          <Image source={require('../assets/imagess/logo.png')} style={{ width: 280, height: 280 }} />
-          <Text style={{ fontSize: 30, color: 'white', fontWeight: 'bold' }}> Register Here</Text>
-        </View>
-        <View style={{ alignItems: 'center', marginVertical: 10 }}>
+    <View style={{ backgroundColor: '#123032', height: '100%', justifyContent: 'center', alignItems: 'center', paddingTop: 80 }}>
+
+
+      <View style={{ alignItems: 'center', marginVertical:5 }}>
+        <Mosque name="mosque" size={100} color={'white'} />
+        <Text style={{ fontSize: 30, color: 'white', fontWeight: 'bold' }}> Register Here</Text>
+      </View>
+      <ScrollView >
+        <View style={{ alignItems: 'center', }}>
           <TextInput
             style={styles.input}
             placeholder='Name'
@@ -80,8 +84,9 @@ const Register = ({navigation}) => {
             <Text style={styles.buttonText}>Register</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={() => navigation.navigate("Login")} >
-            <Text style={styles.text}>You have a Account</Text>
+            <Text style={styles.text}>You have a Account | login</Text>
           </TouchableOpacity>
+          <Signinbtn />
         </View>
       </ScrollView>
     </View>
@@ -103,11 +108,11 @@ const styles = StyleSheet.create({
   button: {
     backgroundColor: '#509494',
     padding: 10,
-    color: 'white',  
+    color: 'white',
     alignItems: 'center',
     borderRadius: 10,
     width: 300,
-  
+
   },
   buttonText: {
     color: '#123032',
@@ -118,7 +123,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#fff',
     marginVertical: 4,
-    
+
   }
 });
 

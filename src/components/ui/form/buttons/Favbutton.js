@@ -10,30 +10,30 @@ export default function FavToggleButton({ masjidId }) {
     const navigation = useNavigation();
     const dispatch = useDispatch();
     const user = useSelector((state) => state.user.user);
-    const favmasjid = useSelector((state) => state.user.user.favoriteMasjids);
+    // const favmasjid = useSelector((state) => state.user);
     const token = useSelector((state) => state.user.token);
 
     const [isFavorite, setIsFavorite] = useState(false);
 
 
-    useEffect(() => {
+    // useEffect(() => {
         
-        setIsFavorite(favmasjid.includes(masjidId.id));
-    }, [favmasjid, masjidId.id]);
+    //     setIsFavorite(favmasjid.includes(masjidId.id));
+    // }, [favmasjid, masjidId.id]);
 
-    const onClickHandler = () => {
-        if (!token) {
-            navigation.navigate('Login');
-        } else {
-            setIsFavorite(prevState => !prevState);
-        }
-    };
+    // const onClickHandler = () => {
+    //     if (!token) {
+    //         navigation.navigate('Login');
+    //     } else {
+    //         setIsFavorite(prevState => !prevState);
+    //     }
+    // };
 
 
     const color = isFavorite ? "white" : "white";
 
     return (
-        <TouchableOpacity onPress={onClickHandler}>
+        <TouchableOpacity >
             {isFavorite ? (
                 <Icon name="heart" size={30} color={color} />
             ) : (

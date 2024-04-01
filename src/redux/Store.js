@@ -8,10 +8,11 @@ import { persistStore, persistReducer, FLUSH,
   import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import userSlice from "./store/slice/Userslice";
-
+import Token from "./store/slice/Token";
 const rootReducer = combineReducers({
    // Add more slices/reducers here if needed
    user: userSlice,
+   token: Token
  });
  
 

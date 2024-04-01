@@ -3,13 +3,16 @@ import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { clearToken } from '../redux/store/slice/Token';
 import {clearUser} from '../redux/store/slice/Userslice'
+import {
+  GoogleSignin
+} from '@react-native-google-signin/google-signin';
+import Useraddress from '../components/location/Useraddress';
+import Address from '../components/location/Addressss';
 
 const ProfileScreen = ({ navigation }) => {
-
   const dispatch = useDispatch();
-  const token = useSelector(state => state.user.token);
   const user = useSelector(state => state.user.user);
-
+  const token = useSelector(state => state.token);
 
   const checkLogin = async () => {
     if (!token) {
@@ -22,10 +25,10 @@ const ProfileScreen = ({ navigation }) => {
 
   const handleLogout = () => {
     dispatch(clearUser());
+    dispatch(clearToken());
+    GoogleSignin.signOut();
     navigation.navigate('Login');
   };
-
-
 
 
   return (
@@ -39,12 +42,12 @@ const ProfileScreen = ({ navigation }) => {
           <View style={styles.infoContainer}>
             <Text style={styles.infoLabel}>Username -</Text>
             <Text style={styles.infoLabel}>Email -</Text>
-            <Text style={styles.infoLabel}>Location -</Text>
+            <Text style={styles.infoLabel}>Address -</Text>
           </View>
           <View style={styles.infoContainer}>
             <Text style={styles.name}>{user?.username}</Text>
             <Text style={[styles.infoValue, { marginTop: 20 }]}>{user?.email}</Text>
-
+            
           </View>
         </View>
       </View>

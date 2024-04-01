@@ -5,10 +5,11 @@ import { setToken } from '../redux/store/slice/Token'; // Assuming you have crea
 import { setUser } from '../redux/store/slice/Userslice'; // Assuming you have created tokenSlice as described in the previous answer
 import axios from 'axios';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import Mosque from 'react-native-vector-icons/FontAwesome6';
+import Signinbtn from './social/Signinbtn';
 
 function Loginform(props) {
   const [loading, setLoading] = useState(false);
-  const [successMessage, setSuccessMessage] = useState();
   const [errorMessage, setErrorMessage] = useState();
   const [validationErrors, setValidationErrors] = useState();
   const [email, setemail] = useState('');
@@ -17,8 +18,7 @@ function Loginform(props) {
 
 
   const dispatch = useDispatch();
-  const userd = useSelector((state) => state.user);
-  const tokenrdx = userd.token
+  const userd = useSelector((state) => state.token);
 
   const formData = {
     email: email,
@@ -32,10 +32,10 @@ function Loginform(props) {
         'https://admin.meandmyteam.org/api/login',
         formData
       );
-      const data = res.data.data.token;
+      const token = res.data.data.token;
       const user = res.data.data;
       dispatch(setUser(user));
-      dispatch(setToken(data));
+      dispatch(setToken(token));
       setTimeout(() => {
         props.navigation.navigate("Home");
       }, 500);
@@ -48,7 +48,7 @@ function Loginform(props) {
 
   return (
     <View style={styles.outer_div}>
-      <Image source={require('../assets/imagess/logo.png')} style={{ width: 250, height: 250, marginHorizontal: 45, alignItems: 'center' }} />
+      <Mosque name="mosque" size={100} color={'white'} style={{ marginVertical: 10 }} />
       <View style={styles.registration_form}>
         <Text style={styles.heading}>Login Your Account</Text>
         <TextInput
@@ -90,6 +90,7 @@ function Loginform(props) {
         </TouchableOpacity>
         {errorMessage && <Text style={styles.error}>{errorMessage}</Text>}
       </View>
+      <Signinbtn />
     </View>
   );
 }
@@ -105,7 +106,7 @@ const styles = {
     alignItems: 'center'
   },
   heading: {
-    fontSize: 20,
+    fontSize: 30,
     fontWeight: 'bold',
     marginBottom: 10,
     alignItems: 'center',
@@ -150,7 +151,7 @@ const styles = {
   },
   toggleButton: {
     position: 'absolute',
-    top: 102,
+    top: 115,
     right: 20,
   },
 };

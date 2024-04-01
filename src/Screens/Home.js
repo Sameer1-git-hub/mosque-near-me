@@ -21,8 +21,6 @@ export default function Home(props) {
     sendLocationData();
   }, [Userlocation]);
 
-  console.log('locat', Userlocation)
-
   const sendLocationData = async () => {
     try {
       setLoading(true);
@@ -39,8 +37,8 @@ export default function Home(props) {
           }
         }
       );
-      setcurrent_page(current_page + 1);
       setMasjidData(prevData => [...prevData, ...response.data.results]);
+      setcurrent_page(current_page + 1);
     } catch (error) {
       console.error('Error sending location data:', error);
     } finally {
@@ -52,16 +50,18 @@ export default function Home(props) {
 
   const heandelsendlocation = (location) => {
     setMasjidData([]);
+    setcurrent_page(1);
     setUserlocation([location.latitude, location.longitude]);
   };
 
   const handleRefresh = () => {
     setRefreshing(true);
-    setcurrent_page(1);
+   
     sendLocationData();
   };
   const handleLoadMore = () => {
     sendLocationData();
+
   };
 
   return (

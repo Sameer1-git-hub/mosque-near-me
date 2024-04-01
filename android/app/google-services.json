@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1018173381497",
+    "project_id": "new-masjid-near-me",
+    "storage_bucket": "new-masjid-near-me.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1018173381497:android:82b10e3505804cec166da8",
+        "android_client_info": {
+          "package_name": "com.masjidapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCl984nf05CsLqo9JMjqmyzBDvKVNTgpeg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

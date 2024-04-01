@@ -1,0 +1,29 @@
+shakey get comnd cd android && ./gradlew app:signingReport
+
+Task :app:signingReport
+Variant: debug
+Config: debug
+Store: C:\Users\0158s\.android\debug.keystore
+Alias: AndroidDebugKey
+MD5: 98:D9:39:F1:2B:AA:82:02:B0:26:77:D1:59:82:A9:7E
+SHA1: 2B:18:1B:D5:7F:7A:B8:A1:19:CA:6D:C9:97:B8:C5:E5:A6:CC:C3:50
+SHA-256: A4:98:D6:C9:27:53:9C:B9:D1:14:60:65:55:C1:38:D2:62:06:A3:F6:63:0F:B5:83:9F:A1:AF:AD:D5:1D:DC:74
+Valid until: Sunday, November 2, 2053
+----------
+Variant: release
+Config: release
+Store: D:\Sameer\ReactNativeAPP\MasjidAPP\android\app\my-release-key.keystore
+Alias: my-key-alias
+MD5: 45:20:7A:7B:F5:FA:B4:82:83:11:F2:AD:9D:87:70:8D
+SHA1: BA:5A:92:92:C6:59:6B:49:F7:2A:9D:B2:02:19:EE:E0:92:9A:26:E2
+SHA-256: F9:30:36:83:90:0F:26:F7:AB:66:80:BA:F4:80:E7:93:0C:E6:94:DE:D1:FE:E7:17:5E:59:AF:23:E7:71:E3:8F     
+Valid until: Tuesday, March 28, 2051
+----------
+Variant: debugAndroidTest
+Config: debug
+Store: C:\Users\0158s\.android\debug.keystore
+Alias: AndroidDebugKey
+MD5: 98:D9:39:F1:2B:AA:82:02:B0:26:77:D1:59:82:A9:7E
+SHA1: 2B:18:1B:D5:7F:7A:B8:A1:19:CA:6D:C9:97:B8:C5:E5:A6:CC:C3:50
+SHA-256: A4:98:D6:C9:27:53:9C:B9:D1:14:60:65:55:C1:38:D2:62:06:A3:F6:63:0F:B5:83:9F:A1:AF:AD:D5:1D:DC:74     
+Valid until: Sunday, November 2, 2053

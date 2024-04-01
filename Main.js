@@ -11,12 +11,12 @@ export default function Main() {
   // store.subscribe(() => {
   //   console.log(store.getState());
   // })
-const { store, persistor } = createStoreAndPersistor()
+  const { store, persistor } = createStoreAndPersistor()
 
   return (
     <Provider store={store}>
-    <PersistGate loading={null} persistor={persistor}>
-      <App />
+      <PersistGate loading={null} persistor={persistor}>
+        <App />
       </PersistGate>
     </Provider>
   )
