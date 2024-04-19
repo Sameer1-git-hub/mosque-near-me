@@ -12,32 +12,32 @@ export default function Timebox({masjid}) {
         <>
             <View style={{ flexDirection: 'row', height: '34%' }}>
                 <View style={styles.box}>
-                    <Text style={styles.boxText}>{masjid.fajr}</Text>
+                    <Text style={styles.boxText}>{masjid.fajr ? masjid.fajr : 'N/A'}</Text>
                     <Fajr padding={5} name={'sunrise'} size={30} color={'#fff'} />
                     <Text style={styles.boxText}>Fajr</Text>
                 </View>
                 <View style={styles.box}>
-                    <Text style={styles.boxText}>{masjid.zohar}</Text>
+                    <Text style={styles.boxText}>{masjid.zohar ? masjid.zohar : 'N/A'}</Text>
                     <Zuhr padding={5} name={'sun'} size={30} color={'#fff'} />
                     <Text style={styles.boxText}>Zuh’r</Text>
                 </View>
                 <View style={styles.box}>
-                    <Text style={styles.boxText}>{masjid.asar}</Text>
+                    <Text style={styles.boxText}>{masjid.asar ? masjid.asar : 'N/A'}</Text>
                     <Asar padding={5} name={'sunset'} size={30} color={'#fff'} />
                     <Text style={styles.boxText}>Asar</Text>
                 </View>
                 <View style={styles.box}>
-                    <Text style={styles.boxText}>{masjid.maghrib}</Text>
+                    <Text style={styles.boxText}>{masjid.maghrib ? masjid.maghrib : 'N/A'}</Text>
                     <Magrib padding={5} name={'moon-sharp'} size={30} color={'#fff'} />
                     <Text style={styles.boxText}>Magrib</Text>
                 </View>
                 <View style={styles.box}>
-                    <Text style={styles.boxText}>{masjid.isha}</Text>
+                    <Text style={styles.boxText}>{masjid.isha ? masjid.isha : 'N/A'}</Text>
                     <Magrib padding={5} name={'moon-sharp'} size={30} color={'#fff'} />
                     <Text style={styles.boxText}>Isha’a</Text>
                 </View>
                 <View style={styles.box}>
-                    <Text style={styles.boxText}>{masjid.juma}</Text>
+                    <Text style={styles.boxText}>{masjid.juma ? masjid.juma : 'N/A'}</Text>
                     <Juma padding={5} name={'pray'} size={30} color={'#fff'} />
                     <Text style={styles.boxText}>Juma</Text>
                 </View>
