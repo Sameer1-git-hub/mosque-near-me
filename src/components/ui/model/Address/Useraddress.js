@@ -60,10 +60,10 @@ export default function Useraddress() {
             <Text style={{
                 marginTop: 5,
                 fontSize: 14,
-                color: '#fff', // Changed from 'white' to 'black' for better visibility
+                color: '#fff',
                 width: 250,
             }}>
-                {address || error || 'Fetching address...'}
+                {address || 'Fetching address...'}
             </Text>
         </View>
     );

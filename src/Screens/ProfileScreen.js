@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Button } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { clearToken } from '../redux/store/slice/Token';
@@ -12,7 +12,6 @@ const ProfileScreen = ({ navigation }) => {
   const user = useSelector(state => state.user.user);
   const user2 = useSelector(state => state.user);
   const token = useSelector(state => state.token);
-
 
   const isFocused = useIsFocused();
 
@@ -31,10 +30,10 @@ const ProfileScreen = ({ navigation }) => {
     GoogleSignin.signOut();
     navigation.navigate('Login');
   };
- 
+
   return (
     <View style={styles.container}>
-      <View style={{  }}>
+      <View>
         <View style={{ flexDirection: 'row', alignItems: 'left', justifyContent: 'left', textAlign: 'left' }}>
           <Text style={styles.infoLabel}>Username :</Text>
           {user?.username ? (
@@ -48,12 +47,9 @@ const ProfileScreen = ({ navigation }) => {
           <Useraddress />
         </View>
       </View>
-
-
       <TouchableOpacity onPress={handleLogout} >
         <Text style={styles.outbtn}>Logout</Text>
       </TouchableOpacity>
-
     </View>
   );
 };

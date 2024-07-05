@@ -1,7 +1,6 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Home from './src/Screens/Home';
 import Favorite from './src/Screens/Favorite';
 import ProfileScreen from './src/Screens/ProfileScreen';
@@ -13,7 +12,6 @@ import Popups from './src/logincomponent/popups/Popupheandel';
 import { AnimatedTabBarNavigator } from "react-native-animated-nav-tab-bar";
 
 const Stack = createNativeStackNavigator();
-const Tab = createBottomTabNavigator();
 const Tabs = AnimatedTabBarNavigator();
 
 function TabNavigator() {

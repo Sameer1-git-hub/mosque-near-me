@@ -42,19 +42,14 @@ export default function Masjidcard({ masjid, onMasjidUpdate }) {
                         justifyContent: 'space-between',
                         alignItems: 'center',
                         paddingVertical: 7,
-
                     }}>
-
                         <Text style={styles.title}>{masjid.name}</Text>
                         <View style={{ alignItems: 'center', flexDirection: 'row' }}>
                             <Direction masjid={masjid} />
                             <Text style={styles.subtitle}> {masjid.distance_to_masjid}
                             </Text>
                         </View>
-
-
                     </View>
-
                     <View style={styles.mainicons}>
                         {isLoggedIn ? (
                             user.phone_number ? (
@@ -76,7 +71,6 @@ export default function Masjidcard({ masjid, onMasjidUpdate }) {
                             )}
                         </View>
                     </View>
-
                 </View>
                 <Timebox masjid={masjid} />
             </LinearGradient>
@@ -112,7 +106,6 @@ const styles = StyleSheet.create({
         paddingBottom: 10
     },
     cardContent: {
-        
         justifyContent: 'center',
     },
     textContainer: {

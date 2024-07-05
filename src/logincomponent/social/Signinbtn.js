@@ -37,9 +37,7 @@ export default function Signinbtn() {
       setLoading(true);
       await GoogleSignin.hasPlayServices();
       const data = await GoogleSignin.signIn();
-      const token = data.idToken
-      const user = data
-      console.log('user', token)
+      const token = data.data.id_token
       // dispatch(setUser(user));
       //   dispatch(setToken(token));
       sendTokenToServer(token);

@@ -4,11 +4,9 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import axios from 'axios';
 import { useSelector, useDispatch } from 'react-redux';
 import { setUser } from '../../../../redux/store/slice/Userslice';
-import { useNavigation } from '@react-navigation/native';
 import Snackbar from 'react-native-snackbar';
 
 export default function FavButton({ masjidId, onFavoriteChange }) {
-  const navigation = useNavigation();
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
@@ -57,7 +55,7 @@ export default function FavButton({ masjidId, onFavoriteChange }) {
         } else {
           console.error('Error toggling favorite masjid:', error);
           Snackbar.show({
-            text: 'Unable to toggle favorite masjid. Please try again later.',
+            text: 'Unable to favorite masjid. Please try again later.',
             duration: Snackbar.LENGTH_SHORT,
           });
         }

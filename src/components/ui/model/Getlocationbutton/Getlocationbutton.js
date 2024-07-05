@@ -5,17 +5,15 @@ import Icon from 'react-native-vector-icons/FontAwesome6';
 import { check, request, PERMISSIONS, RESULTS } from 'react-native-permissions';
 import Snackbar from 'react-native-snackbar';
 
-import { IconButton, MD3Colors } from 'react-native-paper';
-
 export default function Getlocationbutton({ setUserlocation, loading }) {
+
   const [locationFetched, setLocationFetched] = useState(false);
+
   const locationRequestInProgress = useRef(false);
 
   const handleUserLocation = useCallback(() => {
     if (locationRequestInProgress.current) return;
-
     locationRequestInProgress.current = true;
-
     GetLocation.getCurrentPosition({
       enableHighAccuracy: true,
       timeout: 15000,
@@ -50,7 +48,6 @@ export default function Getlocationbutton({ setUserlocation, loading }) {
 
   const requestLocationPermission = useCallback(async () => {
     const result = await check(PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION);
-    // console.log('Location permission check result:', result);
     switch (result) {
       case RESULTS.UNAVAILABLE:
         Snackbar.show({

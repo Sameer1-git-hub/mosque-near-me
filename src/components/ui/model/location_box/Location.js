@@ -4,8 +4,8 @@ import Icon from 'react-native-vector-icons/Ionicons';
 
 const { width, height } = Dimensions.get('window');
 
-
 export default function Location({ masjid }) {
+
   const translateAnim = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
@@ -16,7 +16,6 @@ export default function Location({ masjid }) {
         useNativeDriver: true,
       })
     );
-
     animation.start();
     return () => animation.stop();
   }, [translateAnim]);
