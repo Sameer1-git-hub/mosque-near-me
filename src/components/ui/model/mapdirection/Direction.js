@@ -1,11 +1,11 @@
 import { View, Text, TouchableOpacity } from 'react-native'
 import React from 'react'
-import Direct from 'react-native-vector-icons/FontAwesome5';
+import Direct from 'react-native-vector-icons/MaterialIcons';
 import { Linking } from 'react-native';
 
 
 
-export default function Direction({masjid}) {
+export default function Direction({ masjid }) {
 
     const openGoogleMap = () => {
         const lat = masjid.latitude;
@@ -13,15 +13,16 @@ export default function Direction({masjid}) {
         const label = 'Shivpuri, Madhya Pradesh';
 
         const url = `https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}&travelmode=driving&dir_action=navigate&destination_place_id=${label}`;
-    
+
         Linking.openURL(url);
-      };
+    };
 
 
 
     return (
-            <TouchableOpacity onPress={openGoogleMap}>
-                <Direct name={'location-arrow'} size={30} color={'#fff'} />
-            </TouchableOpacity>
+        <TouchableOpacity onPress={openGoogleMap} style={{flexDirection: 'row', alignItems: 'center'}}>
+            <Direct name={'directions-walk'} size={25}
+                color={'#E0FFFF'} />
+        </TouchableOpacity>
     )
 }

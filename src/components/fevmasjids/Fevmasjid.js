@@ -1,49 +1,101 @@
-import { View,Text, ScrollView, ActivityIndicator } from 'react-native'
-import React, { useState, useEffect } from 'react'
-import { useSelector } from 'react-redux';
-import axios from 'axios';
+import React, { useEffect, useState } from 'react';
+import { View, Text, FlatList, ActivityIndicator } from 'react-native';
 import Masjidcard from '../ui/masjid/masjid_card/Masjid_card';
+import axios from 'axios';
+import { useSelector } from 'react-redux';
+import Snackbar from 'react-native-snackbar';
 
-export default function Fevmasjid({ masjid }) {
-  const userData = useSelector(state => state.user);
-  const masjie_ID = userData.favoriteMasjids
-
-  // console.log(masjie_ID)
-
+export default function FavouriteMasjid({ refresh, onFavoriteChange }) {
+  const [refreshing, setRefreshing] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [page, setPage] = useState(1);
   const [masjidData, setMasjidData] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const token = useSelector((state) => state.token);
 
   useEffect(() => {
-    loadmasjids();
-  }, [])
+    fetchData();
+  }, [refresh, onFavoriteChange]);
 
-  const loadmasjids = async () => {
+  const fetchData = async () => {
     try {
-      setLoading(true);
       const response = await axios.post(
-        'https://admin.meandmyteam.org/api/masjid-nearby'
+        `https://admin.meandmyteam.org/api/get-fav-masjids?page=${page}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
-      setMasjidData(response.data.results);
+      if (response.data && response.data.results) {
+        setMasjidData(response.data.results);
+      } else {
+        Snackbar.show({
+          text: 'Loading data, please wait...',
+          duration: Snackbar.LENGTH_SHORT,
+        });
+      }
     } catch (error) {
-      console.error('Error fetching masjids:', error);
-    }
-    finally {
+      Snackbar.show({
+        text: 'Loading data, please wait...',
+        duration: Snackbar.LENGTH_SHORT,
+      });
+    } finally {
       setLoading(false);
     }
   };
 
+  const handleRefresh = async () => {
+    setRefreshing(true);
+    try {
+      const response = await axios.post(
+        `https://admin.meandmyteam.org/api/get-fav-masjids?page=${page + 1}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      if (response.data && response.data.results) {
+        setMasjidData((prevData) => [...prevData, ...response.data.results]);
+        setPage(page + 1);
+      } else {
+        Snackbar.show({
+          text: 'Loading data, please wait...',
+          duration: Snackbar.LENGTH_SHORT,
+        });
+      }
+    } catch (error) {
+      Snackbar.show({
+        text: 'Loading data, please wait...',
+        duration: Snackbar.LENGTH_SHORT,
+      });
+    } finally {
+      setRefreshing(false);
+    }
+  };
+
   return (
-    <View>
-      <ScrollView style={{ height: '100%' }}>
-        {masjie_ID.length > 0 ? (
-          masjie_ID.map(id => (
-            <Masjidcard key={id} masjid={id} masjidi={masjid} />
-          ))
-        ) : (
-          <Text>Koi masjid ID nahi hai.</Text>
-        )}
-        {loading && <ActivityIndicator size="large" color="#0000ff" />}
-      </ScrollView>
+    <View style={{ flex: 1 }}>
+      {loading ? (
+        <ActivityIndicator size="large" color="#509494" />
+      ) : (
+        <FlatList
+          data={masjidData}
+          renderItem={({ item }) => (
+            <Masjidcard masjid={item} key={item.id.toString()} />
+          )}
+          keyExtractor={(item) => item.id.toString()}
+          onRefresh={handleRefresh}
+          refreshing={refreshing}
+          ListEmptyComponent={() => (
+            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', }}>
+              <Text style={{ color: 'red', fontSize: 20 }}>No favorite masjids found.</Text>
+            </View>
+          )}
+        />
+      )}
     </View>
-  )
+  );
 }

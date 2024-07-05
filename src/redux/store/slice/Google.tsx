@@ -21,12 +21,10 @@ const googleLoginSlice = createSlice({
     setGoogleUserData: (state, action: PayloadAction<GoogleLoginState>) => {
       state.name = action.payload.name;
       state.email = action.payload.email;
-      state.photo = action.payload.photo;
     },
     clearGoogleUserData: (state) => {
       state.name = null;
       state.email = null;
-      state.photo = null;
     },
   },
 });

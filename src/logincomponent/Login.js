@@ -1,159 +1,200 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, Image, ActivityIndicator } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, ActivityIndicator, StyleSheet } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import { setToken } from '../redux/store/slice/Token'; // Assuming you have created tokenSlice as described in the previous answer
-import { setUser } from '../redux/store/slice/Userslice'; // Assuming you have created tokenSlice as described in the previous answer
+import { setToken } from '../redux/store/slice/Token';
+import { setUser } from '../redux/store/slice/Userslice';
 import axios from 'axios';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import Mosque from 'react-native-vector-icons/FontAwesome6';
+import Mosque from 'react-native-vector-icons/FontAwesome5';
+import Back from 'react-native-vector-icons/Ionicons';
 import Signinbtn from './social/Signinbtn';
+import { useNavigation } from '@react-navigation/native';
+import Snackbar from 'react-native-snackbar';
 
 function Loginform(props) {
   const [loading, setLoading] = useState(false);
-  const [errorMessage, setErrorMessage] = useState();
-  const [validationErrors, setValidationErrors] = useState();
-  const [email, setemail] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [passwordVisible, setpasswordVisible] = useState(false);
-
-
+  const [emailError, setEmailError] = useState('');
+  const [passwordError, setPasswordError] = useState('');
+  const [passwordVisible, setPasswordVisible] = useState(false);
+  const navigation = useNavigation();
   const dispatch = useDispatch();
-  const userd = useSelector((state) => state.token);
+  const token = useSelector((state) => state.token);
 
-  const formData = {
-    email: email,
-    password: password
-  }
+  useEffect(() => {
+    if (token) {
+      navigation.navigate('Home');
+    }
+  }, [token, navigation]);
 
   const onSubmit = async () => {
+    setEmailError('');
+    setPasswordError('');
+
+    if (!email.trim()) {
+      setEmailError('Please enter your email');
+    }
+    if (!password.trim()) {
+      setPasswordError('Please enter your password');
+    }
+    if (!email.trim() || !password.trim()) {
+      return;
+    }
+
     try {
       setLoading(true);
-      const res = await axios.post(
-        'https://admin.meandmyteam.org/api/login',
-        formData
-      );
-      const token = res.data.data.token;
-      const user = res.data.data;
+      const res = await axios.post('https://admin.meandmyteam.org/api/login', { email, password });
+      const { token, user } = res.data.data;
       dispatch(setUser(user));
       dispatch(setToken(token));
       setTimeout(() => {
-        props.navigation.navigate("Home");
+        navigation.navigate('Dashboard');
       }, 500);
-
     } catch (error) {
-      console.error("Error fetching data:", error);
+      const message = error.response?.status === 401 ? 'Invalid email or password' : 'An error occurred. Please try again later.';
+      setErrorMessage(message);
+      Snackbar.show({
+        text: message,
+        duration: Snackbar.LENGTH_SHORT,
+      });
+    } finally {
+      setLoading(false);
     }
   };
 
+  const backToHome = () => {
+    navigation.navigate('Dashboard');
+  };
 
   return (
-    <View style={styles.outer_div}>
-      <Mosque name="mosque" size={100} color={'white'} style={{ marginVertical: 10 }} />
-      <View style={styles.registration_form}>
-        <Text style={styles.heading}>Login Your Account</Text>
+    <View style={styles.outerDiv}>
+      <TouchableOpacity onPress={backToHome} style={styles.backButton}>
+        <Back name="arrow-back-circle" size={30} color="white" />
+        <Text style={styles.backButtonText}>Go Home</Text>
+      </TouchableOpacity>
+      <Mosque name="mosque" size={100} color="white" style={styles.mosqueIcon} />
+      <View style={styles.registrationForm}>
+        <Text style={styles.heading}>Login</Text>
         <TextInput
           style={styles.input}
           placeholder="Email"
           value={email}
-          onChangeText={setemail}
-          error={!email.trim() ? 'Please enter your email' : ''}
+          onChangeText={setEmail}
+          placeholderTextColor="#888"
+          autoCapitalize="none"
+          keyboardType="email-address"
         />
-
-        {validationErrors && <Text style={styles.error}>{validationErrors}</Text>}
+        {emailError ? <Text style={styles.error}>{emailError}</Text> : null}
         <TextInput
           style={styles.input}
           placeholder="Password"
           value={password}
           secureTextEntry={!passwordVisible}
           onChangeText={setPassword}
-          error={!password.trim() ? 'Please enter your password' : ''}
+          placeholderTextColor="#888"
         />
-        <TouchableOpacity
-          style={styles.toggleButton}
-          onPress={() => setpasswordVisible(!passwordVisible)}
-        >
-          <Icon name={passwordVisible ? 'eye-slash' : 'eye'} size={20} />
+        {passwordError ? <Text style={styles.error}>{passwordError}</Text> : null}
+        <TouchableOpacity style={styles.toggleButton} onPress={() => setPasswordVisible(!passwordVisible)}>
+          <Icon name={passwordVisible ? 'eye-slash' : 'eye'} size={20} color="black" />
         </TouchableOpacity>
 
-        {loading ? (
-          <TouchableOpacity style={styles.button}>
-            <ActivityIndicator size="large" color="#fff" />
-          </TouchableOpacity>
-        ) : (
-          <TouchableOpacity style={styles.button} onPress={onSubmit}>
-            <Text style={styles.buttonText}>Log In</Text>
-          </TouchableOpacity>
-        )}
-
-        <TouchableOpacity onPress={() => props.navigation.navigate("Register")} >
+        <TouchableOpacity style={styles.button} onPress={onSubmit} disabled={loading}>
+          {loading ? <ActivityIndicator size="large" color="#fff" /> : <Text style={styles.buttonText}>Log In</Text>}
+        </TouchableOpacity>
+        {errorMessage ? <Text style={styles.error}>{errorMessage}</Text> : null}
+        <View style={styles.separator}>
+          <Text style={styles.separatorText}>————— Sign in With —————</Text>
+        </View>
+        <Signinbtn />
+        <TouchableOpacity onPress={() => navigation.navigate('Register')} style={styles.newUserButton}>
           <Text style={styles.newUserText}>New User? Create an account</Text>
         </TouchableOpacity>
-        {errorMessage && <Text style={styles.error}>{errorMessage}</Text>}
       </View>
-      <Signinbtn />
     </View>
   );
 }
 
-const styles = {
-  outer_div: {
+const styles = StyleSheet.create({
+  outerDiv: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#509494'
+    backgroundColor: '#123032',
   },
-  registration_form: {
-    alignItems: 'center'
+  registrationForm: {
+    alignItems: 'center',
   },
   heading: {
     fontSize: 30,
     fontWeight: 'bold',
     marginBottom: 10,
-    alignItems: 'center',
-    color: 'white'
+    color: 'white',
   },
   input: {
-    backgroundColor: '#fff',
     color: 'black',
     borderRadius: 10,
     marginBottom: 10,
-    padding: 8,
+    paddingLeft: 10,
     width: 300,
+    backgroundColor: 'white',
   },
   error: {
     color: '#FF0000',
-    marginBottom: 10,
-    fontSize: 16,
-    width: 300,
+    fontSize: 12,
+    marginTop: -8,
+    marginBottom: 8,
   },
   button: {
-    backgroundColor: '#123032',
+    backgroundColor: '#5F8575',
     padding: 10,
     alignItems: 'center',
     borderRadius: 10,
     width: 300,
+    marginBottom: 10,
+    marginTop: 12,
   },
   buttonText: {
-    color: '#509494',
+    color: '#fff',
     fontWeight: '900',
-    fontSize: 23
+    fontSize: 23,
   },
-  pt3: {
-    paddingTop: 15,
+  separator: {
+    alignItems: 'center',
+    marginVertical: 30,
+  },
+  separatorText: {
+    color: 'white',
+  },
+  newUserButton: {
+    marginTop: 100,
   },
   newUserText: {
-    flexDirection: 'row',
     color: 'white',
-    padding: 10,
-  },
-  boldText: {
-    fontWeight: 'bold',
+    paddingVertical: 10,
   },
   toggleButton: {
     position: 'absolute',
-    top: 115,
+    top: 125,
     right: 20,
   },
-};
+  backButton: {
+    position: 'absolute',
+    top: 20,
+    left: 20,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  backButtonText: {
+    color: 'white',
+    fontWeight: '900',
+    fontSize: 17,
+    marginLeft: 10,
+  },
+  mosqueIcon: {
+    marginVertical: 10,
+  },
+});
 
 export default Loginform;

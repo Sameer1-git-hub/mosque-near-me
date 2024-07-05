@@ -1,22 +1,24 @@
-import React, { useEffect } from 'react';
-import { View } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, ActivityIndicator, TouchableOpacity, Image  } from 'react-native';
 import axios from 'axios';
 import {
   GoogleSignin,
-  GoogleSigninButton,
   statusCodes,
 } from '@react-native-google-signin/google-signin';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { setUser } from '../../redux/store/slice/Userslice';
 import { setToken } from '../../redux/store/slice/Token';
+import { useNavigation } from '@react-navigation/native';
+import Snackbar from 'react-native-snackbar';
+import Google from 'react-native-vector-icons/FontAwesome';
 
-const WEB_CLIENT_ID = '830517508551-8g0ehnssf6ufcuc7kckh97vtuaj3cmee.apps.googleusercontent.com';
-const ANDROID_CLIENT_ID = '830517508551-9h7ba3bqqjk544e6d1bss7nc2amb3bdd.apps.googleusercontent.com';
+const WEB_CLIENT_ID = '813670319842-8k2qq4uqqnaa4u4755ufd36gfd7d8ine.apps.googleusercontent.com';
+const ANDROID_CLIENT_ID = '813670319842-p39oce0teqsaa13hf71v5pp9grttu59f.apps.googleusercontent.com';
 
-export default function Signinbtn(props) {
-
+export default function Signinbtn() {
+  const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
-  const userd = useSelector((state) => state.user);
+  const navigation = useNavigation();
 
   useEffect(() => {
     configureGoogleSign();
@@ -25,17 +27,21 @@ export default function Signinbtn(props) {
   const configureGoogleSign = async () => {
     await GoogleSignin.configure({
       webClientId: WEB_CLIENT_ID,
-      offlineAccess: false,
+      offlineAccess: true,
       androidClientId: ANDROID_CLIENT_ID,
     });
   };
 
   const signIn = async () => {
     try {
+      setLoading(true);
       await GoogleSignin.hasPlayServices();
-      const user = await GoogleSignin.signIn();
-      const token = user.idToken
-
+      const data = await GoogleSignin.signIn();
+      const token = data.idToken
+      const user = data
+      console.log('user', token)
+      // dispatch(setUser(user));
+      //   dispatch(setToken(token));
       sendTokenToServer(token);
     } catch (error) {
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
@@ -48,32 +54,57 @@ export default function Signinbtn(props) {
         console.error('Some other error occurred:', error);
       }
     }
+    finally {
+      setLoading(false);
+    }
   };
-
 
   const sendTokenToServer = async (token) => {
     try {
       const response = await axios.post('https://admin.meandmyteam.org/api/auth/google/CallbackNative', {
-        id_token: token
+        id_token: token,
       });
-      const token = response.data.data.sub
-      dispatch(setUser(response.data.data));
-      dispatch(setToken(token));
-      setTimeout(() => {
-        props.navigation.navigate("Home");
-      }, 500);
+      console.log('Response from server:', response);
+
+      if (response.data && response.data.id_token) {
+        const Token = response.data.id_token;
+        const User = response.data;
+
+        // dispatch(setUser(User));
+        // dispatch(setToken(Token));
+
+        setTimeout(() => {
+          navigation.navigate("Home");
+        }, 500);
+      } else {
+        showSnackbar('Invalid response from server');
+      }
     } catch (error) {
       console.error('Error sending token:', error);
     }
   };
 
+  const showSnackbar = (message) => {
+    Snackbar.show({
+      text: message,
+      duration: Snackbar.LENGTH_SHORT,
+    });
+  };
+
   return (
     <View>
-      <GoogleSigninButton
-        size={GoogleSigninButton.Size.Icon}
-        color={GoogleSigninButton.Color.Dark}
-        onPress={signIn}
+      {loading ? (
+        <TouchableOpacity>
+          <ActivityIndicator size="large" color="#fff" />
+        </TouchableOpacity>
+      ) : (
+        <TouchableOpacity onPress={signIn}>
+        <Image
+        source={require('../../assets/imagess/google_icon.png')} // Replace with the path to your image
+        style={{ width: 35, height: 35 , borderRadius: 30}}
       />
+        </TouchableOpacity>
+      )}
     </View>
   );
 }

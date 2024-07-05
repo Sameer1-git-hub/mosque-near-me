@@ -1,110 +1,137 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Dimensions, SafeAreaView, TouchableOpacity } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import Model from '../../model/edit_masjid_timing/Index';
 import Timebox from '../masjid_time_block/Timebox';
 import Location from '../../model/location_box/Location';
 import Direction from '../../model/mapdirection/Direction';
-import Favbutton from '../../form/buttons/Favbutton';
+import Favbutton from '../../model/FavButton/Favbutton';
 import { useSelector } from 'react-redux';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import ParentTimepkr from '../../../../Timepicker/PerentTimepkr';
+import Popups from '../../../../logincomponent/popups/Popupheandel';
+import FavPopup from '../../../../logincomponent/popups/FavoritePopup';
+import AddNumber from '../../../../logincomponent/popups/AddNumber';
 import Edit from 'react-native-vector-icons/AntDesign';
-import { useNavigation } from '@react-navigation/native';
 
+const { width } = Dimensions.get('window');
 
-
-export default function Masjidcard({ masjid }) {
-    const navigation = useNavigation();
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-    const userData = useSelector(state => state.user);
-    const token = userData.token
+export default function Masjidcard({ masjid, onMasjidUpdate }) {
+    const token = useSelector(state => state.token);
+    const user = useSelector(state => state.user);
+    const [isLoggedIn, setIsLoggedIn] = useState(!!token);
+    const [showAddNumber, setShowAddNumber] = useState(false);
 
     useEffect(() => {
-        setIsLoggedIn(!!token); // Changed to !!token to convert it to boolean
+        setIsLoggedIn(!!token);
     }, [token]);
 
-    const handleLoginShow = () => {
-        navigation.navigate('Login');
-    }
+    const onMasjidUpdateHandler = (masjid) => {
+        onMasjidUpdate(masjid);
+    };
 
-    
+    const handleCloseAddNumber = () => {
+        setShowAddNumber(false);
+    };
+
     return (
-        <View>
-            <View style={[styles.card, styles.shadowProp]}>
-                <LinearGradient colors={['#197173', '#0F3E3F']} style={styles.linearcolor}>
-                    <View style={styles.cardContent}>
-                        <View style={styles.mainicons}>
-                            {isLoggedIn ? (
-                                    <Model masjid={masjid} />
-                                ) : (
-                                    <Edit  onPress={handleLoginShow} name="edit" size={30} color={'#FFFFFF'} /> 
-                                )}
-                            <Location  masjid={masjid} />
-                            <View>
-                            {isLoggedIn ? (
-                                    <Favbutton  masjidId={masjid} />
-                                ) : (
-                                    <Icon onPress={handleLoginShow} name="heart-o" size={30} color={'#FFFFFF'} /> 
-                                )}
-                                <Direction  masjid={masjid} />
-                            </View>
-                        </View>
-                        <View style={{ alignItems: 'center', overflow: 'scroll' }}>
-                            <Text style={styles.title}>{masjid.name}</Text>
-                            <Text style={styles.title}>
-                                Distance - {masjid.distance_to_masjid}
+        <SafeAreaView style={styles.safeArea} >
+            <LinearGradient colors={['#197173', '#0F3E3F']} style={styles.linearcolor}>
+                <View style={styles.cardContent}>
+                    <View style={{
+                        flexDirection: 'row',
+                        width: width * 0.9,
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                        paddingVertical: 7,
+
+                    }}>
+
+                        <Text style={styles.title}>{masjid.name}</Text>
+                        <View style={{ alignItems: 'center', flexDirection: 'row' }}>
+                            <Direction masjid={masjid} />
+                            <Text style={styles.subtitle}> {masjid.distance_to_masjid}
                             </Text>
                         </View>
+
+
                     </View>
-                    <Timebox masjid={masjid} />
-                </LinearGradient>
-            </View>
-        </View>
+
+                    <View style={styles.mainicons}>
+                        {isLoggedIn ? (
+                            user.phone_number ? (
+                                <ParentTimepkr masjid={masjid} onMasjidUpdate={onMasjidUpdateHandler} />
+                            ) : (
+                                <TouchableOpacity onPress={() => setShowAddNumber(true)}>
+                                    <Edit name="edit" size={25} color={'#FFFFFF'} />
+                                </TouchableOpacity>
+                            )
+                        ) : (
+                            <Popups />
+                        )}
+                        <Location masjid={masjid} />
+                        <View style={{ alignItems: 'center' }}>
+                            {isLoggedIn ? (
+                                <Favbutton masjidId={masjid.id} />
+                            ) : (
+                                <FavPopup />
+                            )}
+                        </View>
+                    </View>
+
+                </View>
+                <Timebox masjid={masjid} />
+            </LinearGradient>
+            {showAddNumber && <AddNumber visible={showAddNumber} onClose={handleCloseAddNumber} />}
+        </SafeAreaView>
     );
 }
 
 const styles = StyleSheet.create({
+    safeArea: {
+        marginVertical: 10,
+        alignItems: 'center',
+        textAlign: 'center',
+    },
     linearcolor: {
-        width: '100%',
-        height: '95%',
+        height: 'auto',
         borderRadius: 20,
         alignItems: 'center',
-        paddingTop: 10,
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 7,
+            height: 7,
+        },
+        shadowOpacity: 1,
+        shadowRadius: 3.84,
+        elevation: 4,
+        paddingBottom: 15
     },
     mainicons: {
         flexDirection: 'row',
-        justifyContent: 'space-evenly'
-    },
-    card: {
-        width: '100%',
-        backgroundColor: '#132B2B',
-        overflow: 'hidden',
-        marginVertical: 10,
-        height: 350,
-        borderTopRightRadius: 20,
-        borderTopLeftRadius: 20,
+        justifyContent: 'space-between',
         alignItems: 'center',
-        textAlign: 'center',
-        elevation: 3,
-    },
-    shadowProp: {
-        shadowColor: '#171717',
-        shadowOffset: { width: -2, height: 4 },
-        shadowOpacity: 0.2,
-        shadowRadius: 3,
+        paddingBottom: 10
     },
     cardContent: {
-        padding: 15,
+        
         justifyContent: 'center',
+    },
+    textContainer: {
+        alignItems: 'center',
     },
     title: {
         color: '#fff',
         fontSize: 20,
         fontFamily: 'LibreBaskerville-Bold',
+        textAlign: 'left',
+        width: width * 0.6,
+    },
+    subtitle: {
+        color: '#fff',
+        fontSize: 11,
         textAlign: 'center',
-        paddingVertical: 10,
-        width: 350,
-        overflow: 'scroll',
+    },
+    editText: {
+        color: '#FFFFFF',
+        fontSize: 16,
     },
 });

@@ -2,7 +2,7 @@ import React from 'react';
 import { Modal, View, Text, Button, TouchableOpacity, StyleSheet } from 'react-native';
 import LoginPopup from './LoginPopup';
 import Registerpopup from './Registerpopup';
-import Edit from 'react-native-vector-icons/AntDesign';
+import Edit from 'react-native-vector-icons/FontAwesome';
 
 
 const ModalContent1 = ({ onClose, onCloseModal }) => {
@@ -27,14 +27,14 @@ const ModalContent2 = ({ onClose, onSwitchToLogin }) => {
         <Edit name="close" size={30} color={'white'} />
       </TouchableOpacity>
       <Registerpopup />
-      <TouchableOpacity onPress={onSwitchToLogin} style={{ bottom: 50 }}>
+      <TouchableOpacity onPress={onSwitchToLogin} style={{bottom: 30}}>
         <Text style={[styles.text]}>Already have an account? Login</Text>
       </TouchableOpacity>
     </View>
   );
 };
 
-const Popups = () => {
+const FavPopup = () => {
   const [modalVisible, setModalVisible] = React.useState(false);
   const [showModal2, setShowModal2] = React.useState(false);
 
@@ -46,7 +46,7 @@ const Popups = () => {
   return (
     <View style={styles.container}>
       <TouchableOpacity onPress={toggleModal} >
-        <Edit name="edit" size={25} color={'#FFFFFF'} />
+        <Edit name="heart-o" size={25} color={'#FFFFFF'} />
       </TouchableOpacity>
       <Modal
         animationType="slide"
@@ -67,12 +67,13 @@ const Popups = () => {
   );
 };
 
-export default Popups;
+export default FavPopup;
 
 const styles = StyleSheet.create({
   container: {
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    padding: 5
   },
   text: {
     color: 'white',

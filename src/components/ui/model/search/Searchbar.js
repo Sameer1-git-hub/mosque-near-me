@@ -1,19 +1,19 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
-import Icon from 'react-native-vector-icons/Entypo';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 
 
-const GooglePlacesInput = (props) => {
+const GooglePlacesInput = ({setUserlocation}) => {
 
   return (
     <>
       <GooglePlacesAutocomplete
         placeholder='Enter Location'
+        color={'red'}
         onPress={(data, details = null) => {
           const latitude = details.geometry.location.lat;
           const longitude = details.geometry.location.lng;
-          props.setUserlocation({latitude,longitude});
+          setUserlocation({ latitude, longitude });
         }}
         query={{
           key: 'AIzaSyAsKSjAW53hTyvVK3JkzHhnWKFzJjhONX8',
@@ -21,25 +21,7 @@ const GooglePlacesInput = (props) => {
           components: 'country:in',
         }}
         fetchDetails={true}
-        styles={{
-          container: {
-            flex: 1,
-            alignItems: 'center'
-          },
-          textInputContainer: {
-            width: '90%',
-            borderBottomWidth: 2,
-            borderBottomColor: 'gray',
-            
-          },
-          description: {
-            fontWeight: 'bold',
-          },
-          predefinedPlacesDescription: {
-            color: '#1faadb',
-            
-          },
-        }}
+        styles={styles}
       />
     </>
   );
@@ -47,12 +29,34 @@ const GooglePlacesInput = (props) => {
 
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: 'center',
+  },
+  textInputContainer: {
+    width: '96%',
+    borderBottomColor: '#509494',
+    shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 6,
+        },
+        shadowOpacity: 1,
+        shadowRadius: 3.84,
+        elevation: 3,
+  },
+  description: {
+    fontWeight: 'bold',
+    color: '#000',
+  },
+  predefinedPlacesDescription: {
+    color: '#000',
+  },
   icon: {
     position: 'absolute',
     right: 50,
     verticalAlign: 'middle',
-  }
-
-})
+  },
+});
 
 export default GooglePlacesInput;

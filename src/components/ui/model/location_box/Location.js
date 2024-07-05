@@ -1,59 +1,55 @@
-import { View, Text, StyleSheet, ScrollView, Animated } from 'react-native'
-import React, { useRef, useEffect }  from 'react';
+import React, { useRef, useEffect } from 'react';
+import { View, Text, StyleSheet, ScrollView, Animated, Dimensions } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
+
+const { width, height } = Dimensions.get('window');
 
 
 export default function Location({ masjid }) {
-
   const translateAnim = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
-    Animated.loop(
-      Animated.timing(
-        translateAnim,
-        {
-          toValue: -100, // Adjust this value to control the speed of scrolling
-          duration: 5000, // Adjust this value to control the duration of scrolling
-          useNativeDriver: true,
-        }
-      )
-    ).start();
-  }, []);
+    const animation = Animated.loop(
+      Animated.timing(translateAnim, {
+        toValue: -200,
+        duration: 8000,
+        useNativeDriver: true,
+      })
+    );
+
+    animation.start();
+    return () => animation.stop();
+  }, [translateAnim]);
 
   return (
-    <View style={styles.addressviw}  >
-      <Icon name={'location-sharp'} size={30} color={'#509494'} />
-      <ScrollView
-        horizontal
-        showsHorizontalScrollIndicator={false}>
-         <Animated.View
-        style={{
-          flexDirection: 'row',
-          transform: [{ translateX: translateAnim }],
-        }}>
-        <Text style={styles.addressviwtext}>{masjid.address}</Text>
+    <View style={styles.container}>
+      <Icon name="location-sharp" size={22} color="#509494" />
+      <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.scrollViewContent}>
+        <Animated.View style={{ transform: [{ translateX: translateAnim }] }}>
+          <Text style={styles.text}>{masjid.address}</Text>
         </Animated.View>
       </ScrollView>
     </View>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
-  addressviw: {
+  container: {
     backgroundColor: '#123032',
-    height: 50,
-    width: 230,
+    height: height * 0.05,
+    width: width * 0.5,
     borderRadius: 30,
-    justifyContent: 'center',
-    alignItems: 'center',
     flexDirection: 'row',
-    justifyContent: 'space-evenly',
-    paddingHorizontal: 30,
+    alignItems: 'center',
+    paddingHorizontal: 10,
     overflow: 'hidden',
   },
-  addressviwtext: {
-    fontSize: 20,
-    color: '#509494',
-    overflow: 'scroll',
+  scrollViewContent: {
+    alignItems: 'center',
+    flexDirection: 'row',
   },
-})
+  text: {
+    fontSize: 15,
+    color: '#509494',
+  },
+});

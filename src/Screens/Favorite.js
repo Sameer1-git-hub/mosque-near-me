@@ -1,37 +1,44 @@
-import React, { useEffect } from 'react';
-import { View, Text } from 'react-native';
-import { useSelector } from 'react-redux';
+import React, { useEffect, useState } from 'react';
+import { Text, StyleSheet, View } from 'react-native';
+import { useSelector, useDispatch } from 'react-redux';
+import { useIsFocused } from '@react-navigation/native';
 import LinearGradient from 'react-native-linear-gradient';
-import MyDateTimePicker from '../components/Datetime'
-
+import FavouriteMasjid from '../components/fevmasjids/Fevmasjid';
 
 const Favorite = ({ navigation }) => {
-  const userData = useSelector(state => state.user);
-  const Token = userData.token
-
-  const checkLogin = async () => {
-    if (!Token) {
-      navigation.navigate('Login');
-    }
-  };
+  const token = useSelector(state => state.token);
+  const isFocused = useIsFocused();
+  const dispatch = useDispatch();
+  const [refresh, setRefresh] = useState(false);
 
   useEffect(() => {
+    const checkLogin = async () => {
+      if (!token && isFocused) {
+        navigation.navigate('Login');
+      }
+    };
     checkLogin();
-  }, []);
+  }, [token, isFocused, navigation, dispatch]);
+
+  const handleFavoriteChange = () => {
+    setRefresh(!refresh); 
+  };
 
   return (
     <>
-      <LinearGradient colors={['#ebf4f5', '#b5c6e0',]} >
-        <Text style={{
-          color: '#494F55',
-          fontSize: 40,
-          fontWeight: '700',
-          textAlign: 'center'
-        }}>Favorite Mosque's</Text>
-      </LinearGradient>
-      <MyDateTimePicker />
+      <FavouriteMasjid refresh={refresh} onFavoriteChange={handleFavoriteChange} />
     </>
   );
 };
 
 export default Favorite;
+
+const styles = StyleSheet.create({
+  text: {
+    color: '#494F55',
+    fontSize: 40,
+    fontWeight: '700',
+    textAlign: 'center',
+    marginVertical: 10,
+  },
+});

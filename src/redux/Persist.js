@@ -7,7 +7,7 @@ import { persistStore, persistReducer, FLUSH,
    REGISTER, } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 
-import userSlice from "./store/slice/authUserSlice";
+import userSlice from "./store/slice/Userslice";
 
 const rootReducer = combineReducers({
    // Add more slices/reducers here if needed
