@@ -1,16 +1,15 @@
 import React, { useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Button } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { clearToken } from '../redux/store/slice/Token';
-import { clearUser } from '../redux/store/slice/Userslice'
+import { clearUser } from '../redux/store/slice/Userslice';
 import { useIsFocused } from '@react-navigation/native';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import Useraddress from '../components/ui/model/Address/Useraddress';
 
 const ProfileScreen = ({ navigation }) => {
   const dispatch = useDispatch();
-  const user = useSelector(state => state.user.user);
-  const user2 = useSelector(state => state.user);
+  const user = useSelector(state => state.user);
   const token = useSelector(state => state.token);
 
   const isFocused = useIsFocused();
@@ -36,11 +35,7 @@ const ProfileScreen = ({ navigation }) => {
       <View>
         <View style={{ flexDirection: 'row', alignItems: 'left', justifyContent: 'left', textAlign: 'left' }}>
           <Text style={styles.infoLabel}>Username :</Text>
-          {user?.username ? (
-            <Text style={styles.name}>{user.username}</Text>
-          ) : (
-            <Text style={styles.name}>{user2?.name}</Text>
-          )}
+          <Text style={styles.name}>{user?.username}</Text>
         </View>
         <View style={{ flexDirection: 'row', alignItems: 'left', justifyContent: 'left', textAlign: 'left' }}>
           <Text style={styles.infoLabel}>Address :</Text>
@@ -85,6 +80,5 @@ const styles = StyleSheet.create({
     textAlign: 'center'
   }
 });
-
 
 export default ProfileScreen;

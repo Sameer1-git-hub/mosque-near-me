@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, ActivityIndicator, TouchableOpacity, Image  } from 'react-native';
+import { View, ActivityIndicator, TouchableOpacity, Image } from 'react-native';
 import axios from 'axios';
 import {
   GoogleSignin,
@@ -10,7 +10,6 @@ import { setUser } from '../../redux/store/slice/Userslice';
 import { setToken } from '../../redux/store/slice/Token';
 import { useNavigation } from '@react-navigation/native';
 import Snackbar from 'react-native-snackbar';
-import Google from 'react-native-vector-icons/FontAwesome';
 
 const WEB_CLIENT_ID = '813670319842-8k2qq4uqqnaa4u4755ufd36gfd7d8ine.apps.googleusercontent.com';
 const ANDROID_CLIENT_ID = '813670319842-p39oce0teqsaa13hf71v5pp9grttu59f.apps.googleusercontent.com';
@@ -37,22 +36,19 @@ export default function Signinbtn() {
       setLoading(true);
       await GoogleSignin.hasPlayServices();
       const data = await GoogleSignin.signIn();
-      const token = data.data.id_token
-      // dispatch(setUser(user));
-      //   dispatch(setToken(token));
+      const token = data.idToken;
       sendTokenToServer(token);
     } catch (error) {
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
-        console.log('User cancelled the login flow');
+        showSnackbar('Login cancelled. Please try again.');
       } else if (error.code === statusCodes.IN_PROGRESS) {
-        console.log('Operation (e.g. sign in) is already in progress');
+        showSnackbar('Sign-in is already in progress.');
       } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
-        console.log('Play services are not available or outdated');
+        showSnackbar('Google Play services are not available or outdated.');
       } else {
-        console.error('Some other error occurred:', error);
+        showSnackbar('An error occurred: ' + error.message);
       }
-    }
-    finally {
+    } finally {
       setLoading(false);
     }
   };
@@ -62,23 +58,15 @@ export default function Signinbtn() {
       const response = await axios.post('https://admin.meandmyteam.org/api/auth/google/CallbackNative', {
         id_token: token,
       });
-      console.log('Response from server:', response);
-
-      if (response.data && response.data.id_token) {
-        const Token = response.data.id_token;
-        const User = response.data;
-
-        // dispatch(setUser(User));
-        // dispatch(setToken(Token));
-
-        setTimeout(() => {
-          navigation.navigate("Home");
-        }, 500);
-      } else {
-        showSnackbar('Invalid response from server');
-      }
+      const Token = response.data.data.token
+      const User = response.data.data.user
+      dispatch(setUser(User));
+      dispatch(setToken(Token));
+      setTimeout(() => {
+        navigation.navigate("Home");
+      }, 500);
     } catch (error) {
-      console.error('Error sending token:', error);
+      showSnackbar('Failed to send authentication ' + error);
     }
   };
 
@@ -97,10 +85,10 @@ export default function Signinbtn() {
         </TouchableOpacity>
       ) : (
         <TouchableOpacity onPress={signIn}>
-        <Image
-        source={require('../../assets/imagess/google_icon.png')} // Replace with the path to your image
-        style={{ width: 35, height: 35 , borderRadius: 30}}
-      />
+          <Image
+            source={require('../../assets/imagess/google_icon.png')}
+            style={{ width: 35, height: 35, borderRadius: 30 }}
+          />
         </TouchableOpacity>
       )}
     </View>
