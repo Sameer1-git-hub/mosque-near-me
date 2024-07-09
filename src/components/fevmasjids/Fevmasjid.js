@@ -77,7 +77,7 @@ export default function FavouriteMasjid({ refresh, onFavoriteChange }) {
   };
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{ flex: 1, marginTop: 20 }}>
       {loading ? (
         <ActivityIndicator size="large" color="#509494" />
       ) : (

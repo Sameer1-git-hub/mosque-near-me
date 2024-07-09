@@ -9,6 +9,10 @@ import Register from './src/logincomponent/Register';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Registerpopup from './src/logincomponent/popups/Registerpopup';
 import Popups from './src/logincomponent/popups/Popupheandel';
+import ForgotPassword from './src/logincomponent/Forgot/ForgotPassword';
+import ResetPassword from './src/logincomponent/Forgot/ResetPassword';
+import OTPScreen from './src/logincomponent/Forgot/OTPScreen';
+import ChangePassword from './src/logincomponent/Change/ChangePassword';
 import { AnimatedTabBarNavigator } from "react-native-animated-nav-tab-bar";
 
 const Stack = createNativeStackNavigator();
@@ -63,6 +67,10 @@ export default function App() {
         <Stack.Screen name="Register" component={Register} />
         <Stack.Screen name="Popups" component={Popups} />
         <Stack.Screen name="Registerpopup" component={Registerpopup} />
+        <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
+        <Stack.Screen name="ResetPassword" component={ResetPassword} />
+        <Stack.Screen name="OTPScreen" component={OTPScreen} />
+        <Stack.Screen name="ChangePassword" component={ChangePassword} />
       </Stack.Navigator>
     </NavigationContainer>
   );

@@ -6,12 +6,10 @@ import { setUser } from '../../redux/store/slice/Userslice';
 import axios from 'axios';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Mosque from 'react-native-vector-icons/FontAwesome5';
-import Back from 'react-native-vector-icons/Ionicons';
-import Signinbtn from '../social/Signinbtn';
 import { useNavigation } from '@react-navigation/native';
+import Signinbtn from '../social/Signinbtn';
 
 const { width, height } = Dimensions.get('window');
-
 
 export default function LoginPopup() {
     const [loading, setLoading] = useState(false);
@@ -27,33 +25,36 @@ export default function LoginPopup() {
     const dispatch = useDispatch();
     const token = useSelector(state => state.token);
 
-    const checkLogin = async () => {
-        if (token) {
-            navigation.navigate('Home');
-        }
-    };
     useEffect(() => {
         if (token) {
             navigation.navigate('Dashboard');
         }
-    }, [token]);
+    }, [token, navigation]);
 
     useEffect(() => {
-        checkLogin();
-    }, []);
+        if (token) {
+            navigation.navigate('Home');
+        }
+    }, [token]);
+
+    const validateInputs = () => {
+        let valid = true;
+        if (!email.trim()) {
+            setEmailError('Please enter your email');
+            valid = false;
+        }
+        if (!password.trim()) {
+            setPasswordError('Please enter your password');
+            valid = false;
+        }
+        return valid;
+    };
 
     const onSubmit = async () => {
         setEmailError('');
         setPasswordError('');
-        if (!email.trim()) {
-            setEmailError('Please enter your email');
-        }
-        if (!password.trim()) {
-            setPasswordError('Please enter your password');
-        }
-        if (!email.trim() || !password.trim()) {
-            return;
-        }
+        if (!validateInputs()) return;
+
         try {
             setLoading(true);
             const res = await axios.post(
@@ -77,34 +78,39 @@ export default function LoginPopup() {
             setLoading(false);
         }
     };
+
     return (
-        <View style={styles.outer_div}>
-            <Mosque name="mosque" size={100} color={'white'} style={{ marginVertical: 10 }} />
-            <View style={styles.registration_form}>
+        <View style={styles.outerDiv}>
+            <Mosque name="mosque" size={100} color={'white'} style={styles.mosqueIcon} />
+            <View style={styles.registrationForm}>
                 <Text style={styles.heading}>Login</Text>
                 <TextInput
                     style={styles.input}
                     placeholder="Email"
                     value={email}
                     onChangeText={setEmail}
-
+                    autoCapitalize="none"
+                    keyboardType="email-address"
+                    placeholderTextColor="#888"
                 />
                 {emailError ? <Text style={styles.error}>{emailError}</Text> : null}
-                <TextInput
-                    style={styles.input}
-                    placeholder="Password"
-                    value={password}
-                    secureTextEntry={!passwordVisible}
-                    onChangeText={setPassword}
-
-                />
+                <View style={styles.passwordContainer}>
+                    <TextInput
+                        style={styles.input}
+                        placeholder="Password"
+                        value={password}
+                        secureTextEntry={!passwordVisible}
+                        onChangeText={setPassword}
+                        placeholderTextColor="#888"
+                    />
+                    <TouchableOpacity
+                        style={styles.toggleButton}
+                        onPress={() => setPasswordVisible(!passwordVisible)}
+                    >
+                        <Icon name={passwordVisible ? 'eye-slash' : 'eye'} size={20} color="#888" />
+                    </TouchableOpacity>
+                </View>
                 {passwordError ? <Text style={styles.error}>{passwordError}</Text> : null}
-                <TouchableOpacity
-                    style={styles.toggleButton}
-                    onPress={() => setPasswordVisible(!passwordVisible)}
-                >
-                    <Icon name={passwordVisible ? 'eye-slash' : 'eye'} size={20} />
-                </TouchableOpacity>
 
                 {loading ? (
                     <TouchableOpacity style={styles.button}>
@@ -117,8 +123,11 @@ export default function LoginPopup() {
                 )}
                 {errorMessage ? <Text style={styles.error}>{errorMessage}</Text> : null}
 
+                <TouchableOpacity onPress={() => navigation.navigate('ForgotPassword')}>
+                    <Text style={styles.forgotPassword}>Forgot Password?</Text>
+                </TouchableOpacity>
                 <View style={styles.devideDiv}>
-                    <Text style={{ color: 'white', bottom: 20 }}>————— Sign in With —————</Text>
+                    <Text style={styles.devideText}>————— Sign in With —————</Text>
                     <Signinbtn />
                 </View>
             </View>
@@ -127,75 +136,78 @@ export default function LoginPopup() {
 }
 
 const styles = StyleSheet.create({
-    outer_div: {
+    outerDiv: {
+        flex: 1,
         alignItems: 'center',
+        justifyContent: 'center',
         backgroundColor: '#123032',
-        height: height * 0.85,
-        textAlign: 'center',
         width: width * 1,
-        justifyContent: 'center'
     },
-    registration_form: {
-        alignItems: 'center'
+    mosqueIcon: {
+        marginBottom: 20,
     },
-    devideDiv: {
-        top: 60,
-        alignItems: 'center'
+    registrationForm: {
+        alignItems: 'center',
+        width: '80%',
     },
     heading: {
         textAlign: 'center',
         fontSize: 35,
         fontWeight: 'bold',
         marginBottom: 20,
-        alignItems: 'center',
-        color: 'white'
+        color: 'white',
     },
     input: {
         backgroundColor: '#fff',
         color: 'black',
         borderRadius: 10,
         marginBottom: 14,
-        padding: 8,
-        width: 300,
+        padding: 10,
+        width: '100%',
+    },
+    passwordContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        width: '100%',
+    },
+    toggleButton: {
+        position: 'absolute',
+        right: 10,
+        top: 14
     },
     error: {
         color: 'red',
         marginBottom: 10,
-        padding: 6,
-        fontSize: 16,
-        width: 290,
-        textAlign: 'center'
+        fontSize: 14,
+        textAlign: 'center',
+        width: '100%',
     },
     button: {
         backgroundColor: '#5F8575',
-        padding: 10,
+        padding: 15,
         alignItems: 'center',
         borderRadius: 10,
-        width: 300,
-        top: 20,
-
+        width: '100%',
+        marginVertical: 10,
     },
     buttonText: {
         color: 'white',
         fontWeight: 'bold',
-        fontSize: 20
+        fontSize: 20,
     },
-    toggleButton: {
-        position: 'absolute',
-        top: 135,
-        right: 20,
+    forgotPassword: {
+        fontSize: 16,
+        color: '#f5fefd',
+        textAlign: 'center',
+        marginVertical: 10,
     },
-    backbutton: {
-        position: 'absolute',
-        top: 20,
-        left: 20,
-        flexDirection: 'row',
+    devideDiv: {
         alignItems: 'center',
+        marginTop: 40,
     },
-    backbuttonText: {
+    devideText: {
         color: 'white',
-        fontWeight: '900',
-        fontSize: 17,
-        marginLeft: 10,
+        marginBottom: 20,
     },
 });
+

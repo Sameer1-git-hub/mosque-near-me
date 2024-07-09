@@ -103,6 +103,9 @@ function Loginform(props) {
         <TouchableOpacity style={styles.button} onPress={onSubmit} disabled={loading}>
           {loading ? <ActivityIndicator size="large" color="#fff" /> : <Text style={styles.buttonText}>Log In</Text>}
         </TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate('ForgotPassword')} >
+          <Text style={styles.forgotpassword}>ForgotPassword</Text>
+        </TouchableOpacity>
         {errorMessage ? <Text style={styles.error}>{errorMessage}</Text> : null}
         <View style={styles.separator}>
           <Text style={styles.separatorText}>————— Sign in With —————</Text>
@@ -195,6 +198,12 @@ const styles = StyleSheet.create({
   mosqueIcon: {
     marginVertical: 10,
   },
+  
+  forgotpassword: {
+    fontSize: 16,
+    color: '#f5fefd',
+    textAlign: 'center',
+  }
 });
 
 export default Loginform;

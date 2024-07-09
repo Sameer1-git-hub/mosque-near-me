@@ -280,6 +280,7 @@ const styles = StyleSheet.create({
     top: 263,
     right: 20,
   },
+  
 });
 
 export default Register;

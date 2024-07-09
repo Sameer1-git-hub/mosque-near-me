@@ -81,7 +81,7 @@ export default function Masjidcard({ masjid, onMasjidUpdate }) {
 
 const styles = StyleSheet.create({
     safeArea: {
-        marginVertical: 10,
+        marginBottom: 20,
         alignItems: 'center',
         textAlign: 'center',
     },

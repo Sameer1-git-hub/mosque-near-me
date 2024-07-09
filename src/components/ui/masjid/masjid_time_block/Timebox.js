@@ -45,7 +45,7 @@ export default function Timebox({ masjid }) {
                 </View>
                 <View style={styles.box}>
                     <Text style={styles.boxText}>{masjid.juma ? masjid.juma : 'N/A'}</Text>
-                    <Juma padding={5} name={'pray'} size={28} color={'#00ff00'} />
+                    <Juma padding={5} name={'pray'} size={28} color={'#9ACD32'} />
                     <Text style={styles.boxText}>Juma</Text>
                 </View>
             </View>

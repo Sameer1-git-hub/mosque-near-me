@@ -31,30 +31,35 @@ const ProfileScreen = ({ navigation }) => {
   };
 
   return (
-    <View style={styles.container}>
-      <View>
-        <View style={{ flexDirection: 'row', alignItems: 'left', justifyContent: 'left', textAlign: 'left' }}>
-          <Text style={styles.infoLabel}>Username :</Text>
-          <Text style={styles.name}>{user?.username}</Text>
+    <>
+      <View style={styles.container}>
+        <View>
+          <View style={{ flexDirection: 'row', alignItems: 'left', justifyContent: 'left', textAlign: 'left' }}>
+            <Text style={styles.infoLabel}>Username :</Text>
+            <Text style={styles.name}>{user?.username}</Text>
+          </View>
+          <View style={{ flexDirection: 'row', alignItems: 'left', justifyContent: 'left', textAlign: 'left' }}>
+            <Text style={styles.infoLabel}>Address :</Text>
+            <Useraddress />
+          </View>
         </View>
-        <View style={{ flexDirection: 'row', alignItems: 'left', justifyContent: 'left', textAlign: 'left' }}>
-          <Text style={styles.infoLabel}>Address :</Text>
-          <Useraddress />
-        </View>
+        <TouchableOpacity onPress={handleLogout} >
+          <Text style={styles.outbtn}>Logout</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate('ChangePassword')} >
+          <Text style={styles.Changepass}>Change Password</Text>
+        </TouchableOpacity>
       </View>
-      <TouchableOpacity onPress={handleLogout} >
-        <Text style={styles.outbtn}>Logout</Text>
-      </TouchableOpacity>
-    </View>
+    </>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    justifyContent: 'space-evenly',
+    justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#123032',
-    height: '100%'
+    height: '100%',
   },
   name: {
     fontWeight: 'bold',
@@ -77,7 +82,14 @@ const styles = StyleSheet.create({
     padding: 8,
     borderRadius: 30,
     width: 150,
-    textAlign: 'center'
+    textAlign: 'center',
+    marginVertical: 50
+  },
+  Changepass: {
+    fontSize: 17,
+    color: '#fff',
+    textAlign: 'center',
+    marginVertical: 50
   }
 });
 
