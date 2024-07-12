@@ -4,8 +4,8 @@ import { useDispatch } from 'react-redux';
 import axios from 'axios';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-import { setToken } from '../redux/store/slice/Token';
-import { setUser } from '../redux/store/slice/Userslice';
+import { setToken } from '../../redux/store/slice/Token';
+import { setUser } from '../../redux/store/slice/Userslice';
 import Back from 'react-native-vector-icons/Ionicons';
 import Snackbar from 'react-native-snackbar';
 

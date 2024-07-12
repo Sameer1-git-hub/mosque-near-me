@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, TextInput, Dimensions, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import { setToken } from '../../redux/store/slice/Token';
-import { setUser } from '../../redux/store/slice/Userslice';
+import { setToken } from '../../../redux/store/slice/Token';
+import { setUser } from '../../../redux/store/slice/Userslice';
 import axios from 'axios';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Mosque from 'react-native-vector-icons/FontAwesome5';

@@ -86,7 +86,7 @@ export default function Signinbtn() {
       ) : (
         <TouchableOpacity onPress={signIn}>
           <Image
-            source={require('../../assets/imagess/google_icon.png')}
+            source={require('../../../assets/imagess/google_icon.png')}
             style={{ width: 35, height: 35, borderRadius: 30 }}
           />
         </TouchableOpacity>

@@ -7,7 +7,7 @@ import TimePicker from './TimePicker';
 import axios from 'axios';
 import Snackbar from 'react-native-snackbar';
 
-export default function ParentTimePicker({ masjid, onMasjidUpdate, handleShowPhonePopup }) {
+export default function Changetime({ masjid, onMasjidUpdate, handleShowPhonePopup }) {
     const token = useSelector(state => state.token);
     const [showPrayers, setShowPrayers] = useState(false);
     const [updatedMasjid, setUpdatedMasjid] = useState(masjid);

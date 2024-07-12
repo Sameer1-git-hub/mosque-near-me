@@ -87,9 +87,9 @@ const styles = StyleSheet.create({
   },
   Changepass: {
     fontSize: 17,
-    color: '#fff',
+    color: '#FFF',
     textAlign: 'center',
-    marginVertical: 50
+    marginVertical: 50,
   }
 });
 

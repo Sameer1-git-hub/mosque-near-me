@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Modal, View, Text, TextInput, StyleSheet, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
-import { setUser } from '../../redux/store/slice/Userslice';
+import { setUser } from '../../../redux/store/slice/Userslice';
 import Closesquare from 'react-native-vector-icons/AntDesign';
 
 export default function AddNumber({ visible, onClose }) {

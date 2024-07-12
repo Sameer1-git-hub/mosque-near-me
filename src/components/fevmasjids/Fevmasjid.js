@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, FlatList, ActivityIndicator } from 'react-native';
-import Masjidcard from '../ui/masjid/masjid_card/Masjid_card';
+import Masjidcard from '../ui/masjid_card/Masjid_card';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
 import Snackbar from 'react-native-snackbar';

@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { View, ActivityIndicator, FlatList, StyleSheet } from 'react-native';
 import GooglePlacesInput from '../components/ui/model/search/Searchbar';
-import Masjidcard from '../components/ui/masjid/masjid_card/Masjid_card';
+import Masjidcard from '../components/ui/masjid_card/Masjid_card';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
 import Getlocationbutton from '../components/ui/model/Getlocationbutton/Getlocationbutton';
@@ -121,6 +121,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    marginTop: 10
+    marginTop: 5
   }
 });

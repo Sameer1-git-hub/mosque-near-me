@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useIsFocused } from '@react-navigation/native';
 import FavouriteMasjid from '../components/fevmasjids/Fevmasjid';
+import Calendar from '../components/ui/model/Calendar/Calendar';
 
 const Favorite = ({ navigation }) => {
   const token = useSelector(state => state.token);
@@ -23,7 +24,11 @@ const Favorite = ({ navigation }) => {
   };
 
   return (
-    <FavouriteMasjid refresh={refresh} onFavoriteChange={handleFavoriteChange} />
+    <>
+      <Calendar />
+      <FavouriteMasjid refresh={refresh} onFavoriteChange={handleFavoriteChange} />
+
+    </>
   );
 };
 

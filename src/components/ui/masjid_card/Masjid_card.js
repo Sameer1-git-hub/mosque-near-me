@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, Dimensions, SafeAreaView, TouchableOpacity } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import Timebox from '../masjid_time_block/Timebox';
-import Location from '../../model/location_box/Location';
-import Direction from '../../model/mapdirection/Direction';
-import Favbutton from '../../model/FavButton/Favbutton';
+import Timebox from '../model/masjid_time_block/Timebox';
+import Location from '../model/location_box/Location';
+import Direction from '../model/mapdirection/Direction';
+import Favbutton from '../model/FavButton/Favbutton';
 import { useSelector } from 'react-redux';
-import ParentTimepkr from '../../../../Timepicker/PerentTimepkr';
-import Popups from '../../../../logincomponent/popups/Popupheandel';
-import FavPopup from '../../../../logincomponent/popups/FavoritePopup';
-import AddNumber from '../../../../logincomponent/popups/AddNumber';
+import Changetime from '../model/Timepicker/PerentTimepkr';
+import Popups from '../../Auth/popups/Popupheandel';
+import FavPopup from '../../Auth/popups/FavoritePopup';
+import AddNumber from '../../Auth/popups/AddNumber';
 import Edit from 'react-native-vector-icons/AntDesign';
 
 const { width } = Dimensions.get('window');
@@ -53,7 +53,7 @@ export default function Masjidcard({ masjid, onMasjidUpdate }) {
                     <View style={styles.mainicons}>
                         {isLoggedIn ? (
                             user.phone_number ? (
-                                <ParentTimepkr masjid={masjid} onMasjidUpdate={onMasjidUpdateHandler} />
+                                <Changetime masjid={masjid} onMasjidUpdate={onMasjidUpdateHandler} />
                             ) : (
                                 <TouchableOpacity onPress={() => setShowAddNumber(true)}>
                                     <Edit name="edit" size={25} color={'#FFFFFF'} />
