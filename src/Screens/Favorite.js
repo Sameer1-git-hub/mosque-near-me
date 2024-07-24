@@ -27,7 +27,6 @@ const Favorite = ({ navigation }) => {
     <>
       <Calendar />
       <FavouriteMasjid refresh={refresh} onFavoriteChange={handleFavoriteChange} />
-
     </>
   );
 };

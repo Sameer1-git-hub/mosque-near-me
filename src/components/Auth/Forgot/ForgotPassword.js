@@ -1,18 +1,58 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, ActivityIndicator, Alert  } from 'react-native';
+import axios from 'axios';
+import Snackbar from 'react-native-snackbar';
 
-
-export default function ForgotPassword({navigation}) {
-    const [email, setEmail] = useState('');
+export default function ForgotPassword({ navigation }) {
+  const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(false);
 
+  const handleForgotPassword = async () => {
+    if (!email) {
+      Snackbar.show({
+        text: 'Please enter an email address',
+        duration: Snackbar.LENGTH_SHORT,
+      });
+      return;
+    }
 
-  const handleForgotPassword = () => {
-    // Add your logic to send a password reset request
-    // For example, an API call to your backend
+    try {
+      setLoading(true);
+      const res = await axios.post('https://admin.meandmyteam.org/api/forget-password-app', { email });
 
-    // On success, navigate to the next screen (optional)
-    navigation.navigate('OTPScreen');
+      console.log(res.data);
+
+      if (res.data.success || res.data.message === 'OTP sent') {
+        // Show success alert
+        Alert.alert(
+          'Check your email',
+          'OTP sent to your email',
+          [
+            {
+              text: 'OK',
+              onPress: () => {
+                // Navigate to OTPScreen after user acknowledges the alert
+                navigation.navigate('OTPScreen');
+              }
+            }
+          ],
+          { cancelable: false }
+        );
+      } else {
+        Snackbar.show({
+          text: res.data.message || 'An error occurred',
+          duration: Snackbar.LENGTH_SHORT,
+        });
+      }
+    } catch (error) {
+      console.log(error);
+      Snackbar.show({
+        text: error.message || 'An error occurred',
+        duration: Snackbar.LENGTH_SHORT,
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -21,16 +61,17 @@ export default function ForgotPassword({navigation}) {
       <TextInput
         style={styles.input}
         placeholder="Enter your email"
-        placeholderTextColor={'#fff'}
+        placeholderTextColor="#fff"
         value={email}
         onChangeText={setEmail}
       />
+       
       <TouchableOpacity style={styles.button} onPress={handleForgotPassword} disabled={loading}>
-          {loading ? <ActivityIndicator size="large" color="#fff" /> : <Text style={styles.buttonText}>Reset</Text>}
-        </TouchableOpacity>
+        {loading ? <ActivityIndicator size="large" color="#fff" /> : <Text style={styles.buttonText}>Reset</Text>}
+      </TouchableOpacity>
     </View>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -38,13 +79,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     padding: 16,
     backgroundColor: '#123032',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   title: {
     fontSize: 24,
     marginBottom: 16,
     textAlign: 'center',
-    color: '#fff'
+    color: '#fff',
   },
   input: {
     height: 45,
@@ -53,7 +94,8 @@ const styles = StyleSheet.create({
     marginBottom: 16,
     paddingHorizontal: 8,
     width: 300,
-    borderRadius: 6
+    borderRadius: 6,
+    color: 'white',
   },
   button: {
     backgroundColor: '#5F8575',

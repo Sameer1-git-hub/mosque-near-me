@@ -1,5 +1,6 @@
 import React, { useState, useRef } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, TouchableWithoutFeedback, Keyboard } from 'react-native';
+import { View, Text, TextInput, Linking, TouchableOpacity, StyleSheet, TouchableWithoutFeedback, Keyboard } from 'react-native';
+import axios from 'axios';
 
 const OTPScreen = ({ navigation }) => {
     const [otp, setOtp] = useState(['', '', '', '']);
@@ -7,17 +8,32 @@ const OTPScreen = ({ navigation }) => {
 
     const handleVerifyOTP = async () => {
         const otpValue = otp.join('');
-        try {
-            // Add your logic to verify the OTP
-            // For example, an API call to your backend
-            // await api.verifyOTP(otpValue);
-
-            // On success, navigate to the ResetPasswordScreen
-            navigation.navigate('ResetPassword');
-        } catch (error) {
-            // Handle error (e.g., show a Snackbar or alert)
-            console.error(error);
-        }
+        if (otpValue.length < 4) {
+            Snackbar.show({
+              text: 'Please enter a valid OTP',
+              duration: Snackbar.LENGTH_SHORT,
+            });
+            return;
+          }
+        setLoading(true);
+    try {
+      const response = await axios.post('https://admin.meandmyteam.org/api/verify-otp', { otp: otpValue });
+      
+      if (response.data.success) {
+        // On success, navigate to the ResetPasswordScreen
+        navigation.navigate('ResetPassword');
+      } else {
+        throw new Error(response.data.message || 'OTP verification failed');
+      }
+    } catch (error) {
+      Snackbar.show({
+        text: error.message || 'Failed to verify OTP. Please try again.',
+        duration: Snackbar.LENGTH_SHORT,
+      });
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
     };
 
     const handleChangeText = (text, index) => {
@@ -30,6 +46,19 @@ const OTPScreen = ({ navigation }) => {
         } else if (!text && index > 0) {
             inputRefs.current[index - 1].focus();
         }
+    };
+    const openGmail = () => {
+        Linking.openURL('https://mail.google.com/mail/u');
+        // const gmailUrl = 'https://mail.google.com/mail';
+        // Linking.canOpenURL(gmailUrl)
+        //     .then((supported) => {
+        //         if (supported) {
+        //             Linking.openURL(gmailUrl);
+        //         } else {
+        //             console.log("Don't know how to open URI: " + gmailUrl);
+        //         }
+        //     })
+        //     .catch((err) => console.error('An error occurred', err));
     };
 
     return (
@@ -58,6 +87,9 @@ const OTPScreen = ({ navigation }) => {
                     accessibilityLabel="Verify OTP"
                 >
                     <Text style={styles.buttonText}>Verify OTP</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={{marginTop: 20}} onPress={openGmail} >
+                    <Text style={[styles.buttonText , {fontSize: 14}]}>Go Mail</Text>
                 </TouchableOpacity>
             </View>
         </TouchableWithoutFeedback>

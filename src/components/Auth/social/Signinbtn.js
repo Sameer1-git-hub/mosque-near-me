@@ -6,8 +6,8 @@ import {
   statusCodes,
 } from '@react-native-google-signin/google-signin';
 import { useDispatch } from 'react-redux';
-import { setUser } from '../../redux/store/slice/Userslice';
-import { setToken } from '../../redux/store/slice/Token';
+import { setUser } from '../../../redux/store/slice/Userslice';
+import { setToken } from '../../../redux/store/slice/Token';
 import { useNavigation } from '@react-navigation/native';
 import Snackbar from 'react-native-snackbar';
 

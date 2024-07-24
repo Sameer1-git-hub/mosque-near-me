@@ -21,19 +21,19 @@ const Tabs = AnimatedTabBarNavigator();
 function TabNavigator() {
   return (
     <Tabs.Navigator
-    appearance={{
-      floating: true,
-      tabBarBackground: '#fff',
-      activeTabBackgrounds: '#509494',
-      whenActiveShow: 'icon-only',
-      dotSize: 'small',
-    }}
+      appearance={{
+        floating: true,
+        tabBarBackground: '#fff',
+        activeTabBackgrounds: '#509494',
+        whenActiveShow: 'icon-only', 
+        dotSize: 'small', 
+      }}
       screenOptions={({ route }) => ({
         tabBarActiveTintColor: "#fff",
         tabBarInactiveTintColor: "#fff",
         tabBarShowLabel: false,
         headerShown: false,
-        tabBarIcon: ({ focused }) => {
+        tabBarIcon: ({ focused }: { focused: boolean }) => {
           let iconName;
 
           if (route.name === 'Dashboard') {
@@ -54,7 +54,6 @@ function TabNavigator() {
       <Tabs.Screen name="Favorite" component={Favorite} />
       <Tabs.Screen name="Account" component={ProfileScreen} />
     </Tabs.Navigator>
-
   );
 }
 

@@ -1,23 +1,52 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet,TouchableOpacity, ActivityIndicator  } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native';
+import axios from 'axios';
+import Snackbar from 'react-native-snackbar';
 
-const ResetPassword = ({navigation}) => {
+const ResetPassword = ({ navigation }) => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  
   const [loading, setLoading] = useState(false);
 
-  const handleResetPassword = () => {
+  const handleResetPassword = async () => {
     if (password !== confirmPassword) {
-      // Add logic to handle password mismatch
-      alert('Passwords do not match');
+      Snackbar.show({
+        text: 'Passwords do not match',
+        duration: Snackbar.LENGTH_SHORT,
+      });
       return;
     }
 
-    // Add your logic to reset the password
-    // For example, an API call to your backend
+    if (!password || !confirmPassword) {
+      Snackbar.show({
+        text: 'Please fill in all fields',
+        duration: Snackbar.LENGTH_SHORT,
+      });
+      return;
+    }
 
-    // On success, navigate back to login or show a success message
+    setLoading(true);
+    try {
+      const response = await axios.post('https://admin.meandmyteam.org/api/reset-password', { password });
+
+      if (response.data.success) {
+        Snackbar.show({
+          text: 'Password reset successfully',
+          duration: Snackbar.LENGTH_SHORT,
+        });
+        navigation.navigate('Login'); // Adjust the navigation target if needed
+      } else {
+        throw new Error(response.data.message || 'Password reset failed');
+      }
+    } catch (error) {
+      Snackbar.show({
+        text: error.message || 'Failed to reset password. Please try again.',
+        duration: Snackbar.LENGTH_SHORT,
+      });
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -40,8 +69,8 @@ const ResetPassword = ({navigation}) => {
         placeholderTextColor={'#fff'}
       />
       <TouchableOpacity style={styles.button} onPress={handleResetPassword} disabled={loading}>
-          {loading ? <ActivityIndicator size="large" color="#fff" /> : <Text style={styles.buttonText}>Reset Password</Text>}
-        </TouchableOpacity>
+        {loading ? <ActivityIndicator size="large" color="#fff" /> : <Text style={styles.buttonText}>Reset Password</Text>}
+      </TouchableOpacity>
     </View>
   );
 };
@@ -52,13 +81,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     padding: 16,
     backgroundColor: '#123032',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   title: {
     fontSize: 24,
     marginBottom: 16,
     textAlign: 'center',
-    color: '#fff'
+    color: '#fff',
   },
   input: {
     height: 45,
@@ -67,7 +96,8 @@ const styles = StyleSheet.create({
     marginBottom: 16,
     paddingHorizontal: 8,
     width: 300,
-    borderRadius: 6
+    borderRadius: 6,
+    color: '#fff',
   },
   button: {
     backgroundColor: '#5F8575',
